@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col col-xl-12">
+      <div class="card mb-3">
+        <div class="card-header">
+            <button [routerLink]="['/items/add']" class="btn btn-info btn-sm pull-right" >+ Add Item</button>
+        </div>
+          <div class="card-body">
+            <div class="row">
+            <fieldset class="form-group col-md-4">
+            <input
+             class="form-control"
+              type='text'
+              id="sku"
+              placeholder='Filter by sku'
+              (keyup)='updateFilter($event)'
+            />
+           </fieldset>
+           <fieldset class="form-group col-md-4">
+           <input
+            class="form-control"
+             type='text'
+             id="name"
+             placeholder='Filter by name'
+             (keyup)='updateFilter($event)'
+           />
+          </fieldset>
+           </div>
+            <ngx-datatable
+              #itemstable
+              class="bootstrap"
+              [rows]="rows"
+              [columns]="columns"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="'auto'"
+              [limit]="5"
+              [loadingIndicator]="loading"
+              >
+            </ngx-datatable>
+            <ng-template #hdrTpl let-column="column" >
+             <strong>Action</strong>
+            </ng-template>
+            <ng-template #editTmpl let-row="row" let-value="value">
+             <a [routerLink]="['./edit', value]" class="btn btn-success"><i class="fa fa-edit"></i></a>
+             <a (click)="onDelete(value)" class="btn btn-success"><i class="fa fa-trash"></i></a>
+           </ng-template>
+
+          </div>
+
+      </div>
+    </div>
+</div>
