@@ -11,7 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {AuthTokenService} from './auth-token/auth-token.service'
 
-import { FormsModule }   from '@angular/forms';
+// import { FormsModule }   from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -25,7 +27,9 @@ export function createTranslateLoader(http: HttpClient) {
         CommonModule,
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
 	      HttpModule,
+        NguiAutoCompleteModule,
         BrowserAnimationsModule,
         HttpClientModule,
         TranslateModule.forRoot({

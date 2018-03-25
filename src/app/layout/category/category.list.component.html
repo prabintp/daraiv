@@ -3,27 +3,18 @@
       <div class="card mb-3">
           <div class="card-body">
             <div class="row">
-            <fieldset class="form-group col-md-4">
-            <input
-             class="form-control"
-              type='text'
-              id="sku"
-              placeholder='Filter by sku'
-              (keyup)='updateFilter($event)'
-            />
-           </fieldset>
            <fieldset class="form-group col-md-4">
            <input
             class="form-control"
              type='text'
              id="name"
-             placeholder='Filter by name'
+             placeholder='Filter by Category Name'
              (keyup)='updateFilter($event)'
            />
           </fieldset>
            </div>
             <ngx-datatable
-              #itemstable
+              #categorytable
               class="bootstrap"
               [rows]="rows"
               [columns]="columns"
@@ -40,12 +31,9 @@
             </ng-template>
             <ng-template #editTmpl let-row="row" let-value="value">
              <a [routerLink]="['./edit', value]" class="btn btn-success"><i class="fa fa-edit"></i></a>
-             <!-- <a (click)="onDelete(value)" class="btn btn-success"><i class="fa fa-trash"></i></a> -->
-             <app-modal (onSuccess)="onDelete(value)" [title]="Confirm" [bodyContent]="'Confirm your Item delete action.'"></app-modal>
+             <app-modal (onSuccess)="onDelete(value)" [title]="Confirm" [bodyContent]="'Confirm your Category delete action.'"></app-modal>
            </ng-template>
-
           </div>
-
       </div>
     </div>
 </div>

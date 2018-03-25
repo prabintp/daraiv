@@ -9,18 +9,18 @@ import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
-export class ItemsService {
+export class InvoicesService {
 
   constructor(private authService: AuthTokenService) { }
   //private userOptions: any;
 
   private itemData: any;
   private userOptions: any = {
-    userPath: 'items'
+    userPath: 'invoices'
   }
 
   // Validate token request
-  getItemsByID(id): Observable<Response> {
+  getInvoicesByID(id): Observable<Response> {
 
       let observ = this.authService.get(this.userOptions.userPath +'/'+id+'?access_token='+this.authService.currentAuthData.accessToken);
 
@@ -39,7 +39,7 @@ export class ItemsService {
           return observ;
   }
 
-  getItems(): Observable<Response> {
+  getInvoices(): Observable<Response> {
 
       let observ = this.authService.get(this.userOptions.userPath +'?access_token='+this.authService.currentAuthData.accessToken+'&shop='+JSON.parse(this.authService.currentAuthData.currentShop).sid);
 
@@ -60,7 +60,7 @@ export class ItemsService {
 
 
   // Validate token request
-  addItems(body): Observable<Response> {
+  addInvoices(body): Observable<Response> {
     body.access_token = this.authService.currentAuthData.accessToken;
     body.shop = JSON.parse(this.authService.currentAuthData.currentShop).sid;
     body.createdBy = this.authService.currentAuthData.uid;
@@ -82,9 +82,8 @@ export class ItemsService {
   }
 
   // Validate token request
-  editItems(body, id): Observable<Response> {
+  editInvoices(body, id): Observable<Response> {
     body.access_token = this.authService.currentAuthData.accessToken;
-    body.createdBy = this.authService.currentAuthData.uid;
     let observ = this.authService.put(this.userOptions.userPath+'/'+id, body);
       observ.subscribe(
           res => {

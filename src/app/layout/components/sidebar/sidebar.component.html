@@ -39,7 +39,7 @@
                         <a href="javascript:void(0)"><span>{{ 'Inventory' | translate }}</span></a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><span>{{ 'Category' | translate }}</span></a>
+                        <a [routerLink]="['/category']" [routerLinkActive]="['router-link-active']"><span>{{ 'Category' | translate }}</span></a>
                     </li>
                 </ul>
             </li>
@@ -52,7 +52,10 @@
             <li class="nested" [class.expand]="showMenu === 'pages'">
                 <ul class="submenu">
                     <li>
-                        <a href="javascript:void(0)"><span>{{ 'All Sales' | translate }}</span></a>
+
+                        <a [routerLink]="['/invoices']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <i class="fa fa-file-o"></i>&nbsp;{{ 'Invoices' | translate }}
+                        </a>
                     </li>
                     <li>
                         <a href="javascript:void(0)"><span>{{ 'Create Sale' | translate }}</span></a>

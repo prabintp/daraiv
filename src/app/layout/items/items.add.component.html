@@ -1,64 +1,61 @@
+<form [formGroup]="itemsForm" (ngSubmit)="onAdd()" class="row">
+  <div class="col-md-6">
+    <fieldset class="form-group">
+        <label>Name</label>
+        <input [class.is-invalid]="itemsForm.controls.name.touched && !itemsForm.controls.name.valid" required name="name" formControlName="name" class="form-control validate ">
+        <div class="invalid-feedback">
+          Item Name is required.
+        </div>
+    </fieldset>
 
-            <form role="form" (ngSubmit)="onAdd()" class="row" #f="ngForm">
+    <div class="row">
+      <fieldset class="form-group col-md-6">
+          <label>Item code</label>
+          <input [class.is-invalid]="itemsForm.controls.sku.touched && !itemsForm.controls.sku.valid" required name="sku" formControlName="sku" class="form-control validate ">
+          <div class="invalid-feedback">
+            Item SKU is required.
+          </div>
+      </fieldset>
+      <div class="form-group col-md-6">
+          <label>Quantity</label>
+          <input [class.is-invalid]="itemsForm.controls.quantity.touched && !itemsForm.controls.quantity.valid"  name="quantity" formControlName="quantity" class="form-control validate ">
+          <div class="invalid-feedback">
+            Item quantity is required.
+          </div>
+      </div>
+    </div>
 
-              <div class="col-md-6">
+    <div class="row">
+      <div class="form-group col-md-6">
+          <label>Unit Price</label>
+          <input [class.is-invalid]="itemsForm.controls.unitprice.touched && !itemsForm.controls.unitprice.valid"  name="unitprice" formControlName="unitprice" class="form-control validate ">
+          <div class="invalid-feedback">
+            Item unitprice is required.
+          </div>
+      </div>
 
-                <fieldset class="form-group">
-                    <label>Name</label>
-                    <input  required name="name" [(ngModel)]="itemsdata.name" class="form-control validate">
-                </fieldset>
-
-                <div class="row">
-
-                  <fieldset class="form-group col-md-6">
-                      <label>Item code</label>
-                      <input required name='sku' [(ngModel)]="itemsdata.sku" class="form-control" placeholder="****">
-                  </fieldset>
-
-                  <div class="form-group col-md-6">
-                      <label>Quantity</label>
-                      <input required name='quantity' [(ngModel)]="itemsdata.quantity" class="form-control">
-                  </div>
-
-                </div>
-
-
-                <div class="row">
-
-                <div class="form-group col-md-6">
-                    <label>Unit Price</label>
-                    <input name='unitprice' [(ngModel)]="itemsdata.unitprice" class="form-control">
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label>Actual Price</label>
-                    <input name='actualprice' [(ngModel)]="itemsdata.actualprice" class="form-control">
-                </div>
-
-              </div>
-
-              </div>
-              <div class="col-md-6">
-
-                <fieldset class="form-group">
-                    <label>Description</label>
-                    <textarea name='desc' [(ngModel)]="itemsdata.desc" class="form-control" rows="3"></textarea>
-                </fieldset>
-                                <fieldset class="form-group">
-                                    <label>Notes</label>
-                                    <textarea name='notes' [(ngModel)]="itemsdata.notes" class="form-control" rows="3"></textarea>
-                                </fieldset>
-
-
-
-
-
-              </div>
-
-              <div class="col-md-12">
-                <button type="submit" class="btn btn-secondary" [disabled]="!(f.valid)">Submit Button</button>
-                <button type="reset" class="btn btn-secondary">Reset Button</button>
-              </div>
-
-
-            </form>
+      <div class="form-group col-md-6">
+          <label>Actual Price</label>
+          <input [class.is-invalid]="itemsForm.controls.actualprice.touched && !itemsForm.controls.actualprice.valid"  name="actualprice" formControlName="actualprice" class="form-control validate ">
+          <div class="invalid-feedback">
+            Item actualprice is required.
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <fieldset class="form-group">
+        <label>Description</label>
+        <textarea name='desc' formControlName="desc" class="form-control" rows="3"></textarea>
+    </fieldset>
+    <fieldset class="form-group">
+        <label>Notes</label>
+        <textarea name='notes' formControlName="notes" class="form-control" rows="3"></textarea>
+    </fieldset>
+  </div>
+  <div class="col-md-12">
+    <button type="submit" class="btn btn-secondary" [disabled]="!(itemsForm.valid)">Submit Button</button>
+    <button type="reset" class="btn btn-secondary">Reset Button</button>
+    <div class="row" >{{itemsForm.value | json}}</div>
+  </div>
+</form>

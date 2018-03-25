@@ -1,0 +1,17 @@
+<!--<button class="btn btn-primary" (click)="open(content)">Large modal</button>-->
+<a (click)="open(content)" class="btn btn-success"><i class="fa fa-trash"></i></a>
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>{{bodyContent}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn-small btn-secondary" (click)="c('Close click')">Cancel</button>
+        <button type="button" class="btn btn-secondary" (click)="onSuccess.emit();c('Close click');">Delete</button>
+    </div>
+  </ng-template>

@@ -1,0 +1,64 @@
+
+            <form role="form" (ngSubmit)="onEdit()" class="row" #f="ngForm">
+
+              <div class="col-md-6">
+
+                <fieldset class="form-group">
+                    <label>Name</label>
+                    <input  required name="name" [(ngModel)]="invoicesdata.name" class="form-control validate">
+                </fieldset>
+
+                <div class="row">
+
+                  <fieldset class="form-group col-md-6">
+                      <label>Item code</label>
+                      <input required name='sku' [(ngModel)]="invoicesdata.sku" class="form-control" placeholder="****">
+                  </fieldset>
+
+                  <div class="form-group col-md-6">
+                      <label>Quantity</label>
+                      <input required name='quantity' [(ngModel)]="invoicesdata.quantity" class="form-control">
+                  </div>
+
+                </div>
+
+
+                <div class="row">
+
+                <div class="form-group col-md-6">
+                    <label>Unit Price</label>
+                    <input name='unitprice' [(ngModel)]="invoicesdata.unitprice" class="form-control">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label>Actual Price</label>
+                    <input name='actualprice' [(ngModel)]="invoicesdata.actualprice" class="form-control">
+                </div>
+
+              </div>
+
+              </div>
+              <div class="col-md-6">
+
+                <fieldset class="form-group">
+                    <label>Description</label>
+                    <textarea name='desc' [(ngModel)]="invoicesdata.desc" class="form-control" rows="3"></textarea>
+                </fieldset>
+                                <fieldset class="form-group">
+                                    <label>Notes</label>
+                                    <textarea name='notes' [(ngModel)]="invoicesdata.notes" class="form-control" rows="3"></textarea>
+                                </fieldset>
+
+
+
+
+
+              </div>
+
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-secondary" [disabled]="!(f.valid)">Submit Button</button>
+                <button type="reset" class="btn btn-secondary">Reset Button</button>
+              </div>
+
+
+            </form>

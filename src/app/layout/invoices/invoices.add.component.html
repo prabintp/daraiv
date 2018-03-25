@@ -1,0 +1,134 @@
+<form  [formGroup]="invoiceForm" (ngSubmit)="onAdd()" class="row">
+
+  <div class="col-md-6">
+    <fieldset class="form-group col-md-6">
+      <label>Invoice#</label>
+        <input [class.is-invalid]="invoiceForm.controls.invoice_id.touched && !invoiceForm.controls.invoice_id.valid" required name="name" formControlName="invoice_id" class="form-control validate ">
+        <div class="invalid-feedback">
+          Invoice ID is required.
+        </div>
+        <div class="invalid-feedback"  *ngIf="invoiceForm.controls.invoice_id.minLength">
+          min length 4
+        </div>
+    </fieldset>
+  </div>
+
+  <div class="col-md-6">
+    <div class="row">
+      <fieldset class="form-group col-md-6">
+        <label>Invoice Date</label>
+        <div class="input-group datepicker-input">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                name="invdate" formControlName="start_date" ngbDatepicker #d1="ngbDatepicker">
+            <button class="input-group-addon" (click)="d1.toggle()" type="button">
+                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                <span class="fa fa-calendar"></span>
+            </button>
+        </div>
+        <!--  <input required name='sku' [(ngModel)]="invoicesdata.sku" class="form-control" placeholder="****"> -->
+      </fieldset>
+      <div class="form-group col-md-6">
+        <label>Due Date{{model}}</label>
+        <div class="input-group datepicker-input">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                name="dp" formControlName="due_date" ngbDatepicker #d2="ngbDatepicker">
+            <button class="input-group-addon" (click)="d2.toggle()" type="button">
+                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                <span class="fa fa-calendar"></span>
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{{line_items}}
+  <div class="col-md-12">
+
+  <!--  <lineitems [group]="line_items"></lineitems> -->
+
+    <div class="row">
+      <fieldset class="form-group col-md-3">
+        <label>Item Detais</label>
+      </fieldset>
+      <div class="form-group col-md-3">
+        <label>Quantity</label>
+      </div>
+      <fieldset class="form-group col-md-3">
+        <label>Rate</label>
+      </fieldset>
+      <fieldset class="form-group col-md-3">
+        <label>amount</label>
+      </fieldset>
+    </div>
+<div formArrayName="line_items">
+    <div  *ngFor="let row of invoiceForm.controls.line_items.controls;  let i = index">
+    <div  class="row" [formGroupName]="i">
+    <fieldset class="form-group col-md-3">
+      <!-- <md-input ngui-auto-complete
+        style="width:100%"
+        id="model6"
+        [(ngModel)]="myModel"
+        [source]="arrayOfNumbers"
+        [list-formatter]="rightAligned"
+        placeholder="amount" align="end">
+        <span md-prefix>$&nbsp;</span>
+        <span md-suffix>.00</span>
+      </md-input>-->
+        <!--   -->
+      <input  ngui-auto-complete
+                  [source]="continents"
+                  name="item_id"
+                  value-property-name="sku"
+                  display-property-name="sku"
+                  (valueChanged)="onChangeItem($event,i,1)"
+                  [list-formatter]="autocompleItems"
+                  placeholder="Select items"
+                  class="form-control">
+    <input type="hidden" name='item_id' formControlName="item_id"  class="form-control">
+      <!--  <input required name='sku' [(ngModel)]="row.line_items" class="form-control" placeholder="****">-->
+    </fieldset>
+    <div class="form-group col-md-3">
+      <input type="text" name='quantity' formControlName="quantity"  class="form-control">
+    </div>
+    <fieldset class="form-group col-md-3">
+        <input required name='rate' formControlName="rate"  class="form-control" placeholder="****">
+    </fieldset>
+    <div class="form-group col-md-3">
+      <input required name='item_total' formControlName="item_total" class="form-control" >
+    </div>
+  </div>
+   </div>
+ </div>
+
+ <div class="form-group row">
+   <fieldset class="form-group col-md-3">
+    <a (click)="addItemRow()"><i class="fa fa-plus fa-fw"></i> Add New Item Row</a>
+   </fieldset>
+    <label for="staticEmail" class="col-md-2 col-form-label offset-md-4 text-right">Sub Total</label>
+    <div class="col-md-2">
+       <input name='sub_total' formControlName="sub_total"  class="form-control-plaintext" placeholder="00" readonly>
+    </div>
+  </div>
+
+ <div class="form-group row">
+    <label class="col-md-2 col-form-label offset-md-7 text-right" >Discount</label>
+    <div class="col-md-2">
+     <input name='discount' formControlName="discount"  class="form-control" placeholder="00">
+    </div>
+ </div>
+
+ <div class="form-group row">
+    <label class="col-md-2 col-form-label offset-md-7 text-right">Total</label>
+    <div class="col-md-2">
+     <input readonly name='total' formControlName="total"  class="form-control-plaintext" placeholder="00">
+    </div>
+ </div>
+
+</div>
+
+
+  <div class="col-md-12">
+    <button type="submit" class="btn btn-secondary">Submit Button</button>
+    <button type="reset" class="btn btn-secondary">Reset Button</button>
+    <div class="row" >{{invoiceForm.value | json}}</div>
+  </div>
+</form>

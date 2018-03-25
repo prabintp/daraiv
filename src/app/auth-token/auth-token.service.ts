@@ -405,13 +405,14 @@ export class AuthTokenService implements CanActivate {
            delete baseParam.password;
            options.body = "access_token=" +baseParam.access_token;//JSON.stringify(baseParam);
         }
+        this.atOptions.authBase = false;
 
 
         // Get auth data from local storage
         this.getAuthDataFromStorage();
 
         // Merge auth headers to request if set
-        if (this.atCurrentAuthData != null) {
+    /*    if (this.atCurrentAuthData != null) {
             (<any>Object).assign(baseHeaders, {
                 'access-token': this.atCurrentAuthData.accessToken,
                 'client':       this.atCurrentAuthData.client,
@@ -419,7 +420,7 @@ export class AuthTokenService implements CanActivate {
                 'token-type':   this.atCurrentAuthData.tokenType,
                 'uid':          this.atCurrentAuthData.uid
             });
-        }
+        } */
 
         baseRequestOptions = new RequestOptions({
             headers: new Headers(baseHeaders)

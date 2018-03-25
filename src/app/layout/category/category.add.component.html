@@ -1,0 +1,22 @@
+<form [formGroup]="categoryForm" (ngSubmit)="onAdd()">
+  <div class="row">
+    <fieldset class="form-group col-md-6">
+      <label>Category Name</label>
+      <input [class.is-invalid]="categoryForm.controls.name.touched && !categoryForm.controls.name.valid" required name="name" formControlName="name" class="form-control validate ">
+      <div class="invalid-feedback">
+        category Name is required.
+      </div>
+    </fieldset>
+  </div>
+  <div class="row">
+    <fieldset class="form-group col-md-6">
+      <label>Description</label>
+        <textarea name="desc" formControlName="desc" class="form-control validate" rows="3"></textarea>
+      </fieldset>
+  </div>
+  <div class="col-md-12">
+      <button type="submit" class="btn btn-secondary" [disabled]="!(categoryForm.valid)">Submit Button</button>
+      <button type="reset" class="btn btn-secondary">Reset Button</button>
+      <div class="row" >{{categoryForm.value | json}}</div>
+  </div>
+</form>

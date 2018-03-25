@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -8,7 +8,8 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModalComponent {
     @Input() heading: string;
-    @Input() body: string;
+    @Input() bodyContent: string;
+    @Output() onSuccess = new EventEmitter<boolean>();
     closeResult: string;
     constructor(private modalService: NgbModal) { }
 
