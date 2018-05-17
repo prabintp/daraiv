@@ -4,6 +4,7 @@ import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { routerTransition } from '../../router.animations';
 import { ItemsService } from './items.service';
+import { CategoryService } from '../category/category.service';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -15,8 +16,9 @@ import 'rxjs/add/operator/map';
     animations: [routerTransition()]
 })
 export class ItemsAddComponent implements OnInit {
-  private itemsForm: FormGroup;
+  public itemsForm: FormGroup;
   private rows: any = [];
+  public listCategory = [];
   itemsdata = {
     notes: '',
     desc: '',
@@ -27,12 +29,39 @@ export class ItemsAddComponent implements OnInit {
   };
     constructor(
       private _fb: FormBuilder,
+      private _categoryService: CategoryService,
       private itemsService: ItemsService,
       private router: Router) {
     }
     ngOnInit() {
+      this.loadCategory();
       this.initForm();
     }
+
+    loadCategory(){
+      this._categoryService.getCategory().subscribe(
+        res => {
+      if (res.status === 200 || res.status === 304) {
+          let resdata = res.json().rows;
+        //  this.rows = res.json().rows;
+          this.listCategory = [...resdata];
+       }
+      else{
+         this.listCategory = []
+       }
+     }
+    );
+   };
+
+
+   autocompleItems = (data: any) : any => {
+     let html = `<span>${data.name}</span>`;
+     return html;
+   }
+
+   setValueCategory(e){
+     this.itemsForm.get('category').setValue(e.id);
+   }
 
     initForm(){
       this.itemsForm = this._fb.group({
@@ -43,6 +72,7 @@ export class ItemsAddComponent implements OnInit {
          actualprice: ['', [Validators.required]],
          desc:[''],
          notes:[''],
+         category:['']
 
        });
     }

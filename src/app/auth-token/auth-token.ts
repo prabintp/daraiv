@@ -53,6 +53,8 @@ export interface UserData {
     nickname:       string;
     image:          any;
     email:          string;
+    shops:          any;
+    currentShop:    any;
 }
 
 // Configuration Options

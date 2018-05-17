@@ -9,18 +9,18 @@ import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
-export class ItemsService {
+export class TaxService {
 
   constructor(private authService: AuthTokenService) { }
   //private userOptions: any;
 
   private itemData: any;
   private userOptions: any = {
-    userPath: 'items'
+    userPath: 'taxes'
   }
 
   // Validate token request
-  getItemsByID(id): Observable<Response> {
+  getTaxByID(id): Observable<Response> {
 
       let observ = this.authService.get(this.userOptions.userPath +'/'+id+'?access_token='+this.authService.currentAuthData.accessToken);
 
@@ -39,14 +39,9 @@ export class ItemsService {
           return observ;
   }
 
-  getItems(): Observable<Response> {
-    let shopParam = '';
-    if (this.authService.currentAuthData.currentShop !== "undefined")
-    {
-      shopParam = '&shop='+JSON.parse(this.authService.currentAuthData.currentShop).sid.id;
-    }
+  getTax(): Observable<Response> {
 
-      let observ = this.authService.get(this.userOptions.userPath +'?access_token='+this.authService.currentAuthData.accessToken+shopParam);
+      let observ = this.authService.get(this.userOptions.userPath +'?access_token='+this.authService.currentAuthData.accessToken+'&shop='+JSON.parse(this.authService.currentAuthData.currentShop).sid.id);
 
       observ.subscribe(
           res => {
@@ -65,7 +60,7 @@ export class ItemsService {
 
 
   // Validate token request
-  addItems(body): Observable<Response> {
+  addTax(body): Observable<Response> {
     body.access_token = this.authService.currentAuthData.accessToken;
     body.shop = JSON.parse(this.authService.currentAuthData.currentShop).sid.id;
     body.createdBy = this.authService.currentAuthData.uid;
@@ -87,15 +82,14 @@ export class ItemsService {
   }
 
   // Validate token request
-  editItems(body, id): Observable<Response> {
+  editTax(body, id): Observable<Response> {
     body.access_token = this.authService.currentAuthData.accessToken;
-    body.createdBy = this.authService.currentAuthData.uid;
     let observ = this.authService.put(this.userOptions.userPath+'/'+id, body);
       observ.subscribe(
           res => {
             this.itemData = res.json();
             console.log(this.itemData);
-            // this.authService.userSignedIn$.next(true);
+            // this.authSservice.userSignedIn$.next(true);
           },
           error => {
               if (error.status === 401) {

@@ -12,14 +12,17 @@ export class HeaderComponent implements OnInit {
     pushRightClass: string = 'push-right';
     profileName: string = '';
 
-    constructor(private translate: TranslateService, public router: Router, public authTokenService: AuthTokenService) {
+    constructor(private translate: TranslateService, public router: Router,
+      public authTokenService: AuthTokenService) {
 
         this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
         this.translate.setDefaultLang('en');
         const browserLang = this.translate.getBrowserLang();
         this.translate.use(browserLang.match(/en|fr|ur|es|it|fa|de/) ? browserLang : 'en');
+        if(authTokenService.currentUserData !== undefined){
+          this.profileName = authTokenService.currentUserData.name;
+        }
 
-        this.profileName = authTokenService.currentUserData.name;
 
         this.router.events.subscribe(val => {
             if (

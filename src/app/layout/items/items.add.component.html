@@ -9,24 +9,38 @@
     </fieldset>
 
     <div class="row">
-      <fieldset class="form-group col-md-6">
+      <fieldset class="form-group col-xl-6">
           <label>Item code</label>
           <input [class.is-invalid]="itemsForm.controls.sku.touched && !itemsForm.controls.sku.valid" required name="sku" formControlName="sku" class="form-control validate ">
           <div class="invalid-feedback">
             Item SKU is required.
           </div>
       </fieldset>
-      <div class="form-group col-md-6">
+      <fieldset class="form-group col-xl-6">
+      <label>Category</label>
+      <input  ngui-auto-complete
+                  [source]="listCategory"
+                  name="name"
+                  value-property-name="name"
+                  display-property-name="name"
+                  [accept-user-input]=false
+                  (valueChanged)="setValueCategory($event)"
+                  [list-formatter]="autocompleItems"
+                  placeholder="Select items"
+                  class="form-control">
+      <input type="hidden" formControlName="category" class="form-control" />
+      </fieldset>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-xl-4">
           <label>Quantity</label>
           <input [class.is-invalid]="itemsForm.controls.quantity.touched && !itemsForm.controls.quantity.valid"  name="quantity" formControlName="quantity" class="form-control validate ">
           <div class="invalid-feedback">
             Item quantity is required.
           </div>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group col-md-6">
+      <div class="form-group col-xl-4">
           <label>Unit Price</label>
           <input [class.is-invalid]="itemsForm.controls.unitprice.touched && !itemsForm.controls.unitprice.valid"  name="unitprice" formControlName="unitprice" class="form-control validate ">
           <div class="invalid-feedback">
@@ -34,7 +48,7 @@
           </div>
       </div>
 
-      <div class="form-group col-md-6">
+      <div class="form-group col-xl-4">
           <label>Actual Price</label>
           <input [class.is-invalid]="itemsForm.controls.actualprice.touched && !itemsForm.controls.actualprice.valid"  name="actualprice" formControlName="actualprice" class="form-control validate ">
           <div class="invalid-feedback">
@@ -42,6 +56,7 @@
           </div>
       </div>
     </div>
+
   </div>
   <div class="col-md-6">
     <fieldset class="form-group">
@@ -56,6 +71,6 @@
   <div class="col-md-12">
     <button type="submit" class="btn btn-secondary" [disabled]="!(itemsForm.valid)">Submit Button</button>
     <button type="reset" class="btn btn-secondary">Reset Button</button>
-    <div class="row" >{{itemsForm.value | json}}</div>
+  <!--  <div class="row" >{{itemsForm.value | json}}</div> -->
   </div>
 </form>

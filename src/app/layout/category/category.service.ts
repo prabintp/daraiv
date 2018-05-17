@@ -41,7 +41,7 @@ export class CategoryService {
 
   getCategory(): Observable<Response> {
 
-      let observ = this.authService.get(this.userOptions.userPath +'?access_token='+this.authService.currentAuthData.accessToken+'&shop='+JSON.parse(this.authService.currentAuthData.currentShop).sid);
+      let observ = this.authService.get(this.userOptions.userPath +'?access_token='+this.authService.currentAuthData.accessToken+'&shop='+JSON.parse(this.authService.currentAuthData.currentShop).sid.id);
 
       observ.subscribe(
           res => {
@@ -62,7 +62,7 @@ export class CategoryService {
   // Validate token request
   addCategory(body): Observable<Response> {
     body.access_token = this.authService.currentAuthData.accessToken;
-    body.shop = JSON.parse(this.authService.currentAuthData.currentShop).sid;
+    body.shop = JSON.parse(this.authService.currentAuthData.currentShop).sid.id;
     body.createdBy = this.authService.currentAuthData.uid;
       let observ = this.authService.post(this.userOptions.userPath, body);
 

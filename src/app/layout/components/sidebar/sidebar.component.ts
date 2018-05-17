@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import {AuthTokenService} from '../../../auth-token/auth-token.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -10,9 +11,27 @@ import { TranslateService } from '@ngx-translate/core';
 export class SidebarComponent {
     isActive: boolean = false;
     showMenu: string = '';
+    currentShop: any = '';
     pushRightClass: string = 'push-right';
 
-    constructor(private translate: TranslateService, public router: Router) {
+    constructor(private translate: TranslateService,
+      public router: Router,
+    public authTokenService: AuthTokenService) {
+    let self = this;
+    this.currentShop = {
+      sid: {
+        name:''
+      }
+    };
+      JSON.stringify('dddddd'+authTokenService.currentAuthData);
+      setTimeout(function(){
+        let shops = JSON.parse(localStorage.getItem('shops'));
+        self.currentShop = shops.find(function(item){if(item.isactive == true) return true});
+      },2000)
+
+
+      //  this.currentShop = authTokenService.currentAuthData.currentShop ? JSON.parse(authTokenService.currentAuthData.currentShop) : '';
+      //  this.currentShop = JSON.parse(localStorage.getItem('currentShop'));
         this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
         this.translate.setDefaultLang('en');
         const browserLang = this.translate.getBrowserLang();

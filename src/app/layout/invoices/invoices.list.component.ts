@@ -14,12 +14,13 @@ import 'rxjs/add/operator/map';
     animations: [routerTransition()]
 })
 export class InvoicesListComponent implements OnInit {
-    private rows: any = [];
+    public rows: any = [];
     temp = [];
     columns = [];
     loading: boolean = false;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
+    @ViewChild('dateTpl') dateTpl: TemplateRef<any>;
     constructor(private invoicesService: InvoicesService, private router: Router) {
         this.loading = true;
         this.invoicesService.getInvoices().subscribe(
@@ -38,13 +39,9 @@ export class InvoicesListComponent implements OnInit {
     ngOnInit() {
 
       this.columns = [
-        {
-          name: 'sku'
-        },
-        { prop: 'name' },
-        { name: 'desc' },
-        { name: 'unitprice' },
-        { name: 'quantity' },
+        { prop: 'invoice_number' },
+        { prop: 'status' },
+        { name: 'total' },
         {
           cellTemplate: this.editTmpl,
           headerTemplate: this.hdrTpl,
@@ -70,14 +67,9 @@ export class InvoicesListComponent implements OnInit {
 
     // filter our data
 
-    if(field == 'name'){
+    if(field == 'invoice_number'){
       const temp = this.temp.filter(function(d) {
-        return d.name.toLowerCase().indexOf(val) !== -1 || !val ;
-      });
-      this.rows = temp;
-    }else {
-      const temp = this.temp.filter(function(d) {
-        return d.sku.toLowerCase().indexOf(val) !== -1 || !val ;
+        return d.invoice_number.toLowerCase().indexOf(val) !== -1 || !val ;
       });
       this.rows = temp;
     }

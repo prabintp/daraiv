@@ -28,16 +28,20 @@
               [rows]="rows"
               [columns]="columns"
               [columnMode]="'force'"
-              [headerHeight]="50"
-              [footerHeight]="50"
+              [headerHeight]="40"
+              [footerHeight]="40"
               [rowHeight]="'auto'"
-              [limit]="5"
+              [limit]="10"
               [loadingIndicator]="loading"
               >
             </ngx-datatable>
             <ng-template #hdrTpl let-column="column" >
              <strong>Action</strong>
             </ng-template>
+            <ng-template #categoryTmpl let-row="row" let-value="value">
+             {{value.name}}
+           </ng-template>
+
             <ng-template #editTmpl let-row="row" let-value="value">
              <a [routerLink]="['./edit', value]" class="btn btn-success"><i class="fa fa-edit"></i></a>
              <!-- <a (click)="onDelete(value)" class="btn btn-success"><i class="fa fa-trash"></i></a> -->

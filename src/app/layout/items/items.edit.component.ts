@@ -4,6 +4,7 @@ import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { routerTransition } from '../../router.animations';
 import { ItemsService } from './items.service';
+import { CategoryService } from '../category/category.service';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -15,8 +16,9 @@ import 'rxjs/add/operator/map';
     animations: [routerTransition()]
 })
 export class ItemsEditComponent implements OnInit {
-  private itemsForm: FormGroup;
+  public itemsForm: FormGroup;
   private rows: any = [];
+  public listCategory = [];
   currentItemID: any;
   itemsdata = {
     notes: '',
@@ -28,19 +30,37 @@ export class ItemsEditComponent implements OnInit {
     sku:'',
     quantity:'',
     unitprice: '',
+    category:{id:'', name:''},
     actualprice: ''
   };
     constructor(
       private _fb: FormBuilder,
       private itemsService: ItemsService,
+      private _categoryService: CategoryService,
       private router: Router,
       private route: ActivatedRoute) {
     }
     ngOnInit() {
+      this.loadCategory();
       this.initForm();
       this.currentItemID = this.route.snapshot.params['id'];
       this.getItems(this.currentItemID);
     }
+
+    loadCategory(){
+      this._categoryService.getCategory().subscribe(
+        res => {
+      if (res.status === 200 || res.status === 304) {
+          let resdata = res.json().rows;
+        //  this.rows = res.json().rows;
+          this.listCategory = [...resdata];
+       }
+      else{
+         this.listCategory = []
+       }
+     }
+    );
+   };
 
     initForm(){
       this.itemsForm = this._fb.group({
@@ -52,7 +72,8 @@ export class ItemsEditComponent implements OnInit {
          desc:[''],
          notes:[''],
          shop:[''],
-         createdBy:['']
+         createdBy:[''],
+         category: ['']
 
        });
     }
@@ -67,6 +88,7 @@ export class ItemsEditComponent implements OnInit {
         actualprice: this.itemsdata.actualprice,
         notes: this.itemsdata.notes || '',
         shop: this.itemsdata.shop,
+        category: this.itemsdata.category ? this.itemsdata.category.id : '',
         createdBy: this.itemsdata.createdBy || ''
       });
     }
@@ -85,6 +107,15 @@ export class ItemsEditComponent implements OnInit {
 
      );
    }
+
+   autocompleItems = (data: any) : any => {
+     let html = `<span>${data.name}</span>`;
+     return html;
+   }
+   setValueCategory(e){
+     this.itemsForm.get('category').setValue(e.id);
+   }
+
     onEdit(){
       this.itemsService.editItems(this.itemsForm.value, this.currentItemID).subscribe(
         res => res.status === 200 || res.status === 201 ? this.router.navigate(['/items']) : this.router.navigate(['/404'])

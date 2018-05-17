@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
     animations: [routerTransition()]
 })
 export class CategoryListComponent implements OnInit {
-    private rows: any = [];
+    public rows: any = [];
     temp = [];
     columns = [];
     loading: boolean = false;

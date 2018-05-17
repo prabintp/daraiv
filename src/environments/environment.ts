@@ -7,6 +7,7 @@ export const environment = {
   production: false,
   token_auth_config: {
     apiBase: 'http://localhost:9000/api',
+  //  apiBase: 'https://app-inprogress.herokuapp.com/api',
     registerAccountPath: 'users',
   }
 };

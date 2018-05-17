@@ -3,37 +3,39 @@ import {Router} from '@angular/router';
 import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { routerTransition } from '../../router.animations';
-import { CategoryService } from './category.service';
-import { Category } from './category.interface';
+import { TaxService } from './tax.service';
+import { Tax } from './tax.interface';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 @Injectable()
 @Component({
-    selector: 'app-category',
-    templateUrl: './category.add.component.html',
-  //  styleUrls: ['./category.component.scss'],
+    selector: 'app-tax',
+    templateUrl: './tax.add.component.html',
+  //  styleUrls: ['./tax.component.scss'],
     animations: [routerTransition()]
 })
-export class CategoryAddComponent implements OnInit {
-  public categoryForm: FormGroup;
+export class TaxAddComponent implements OnInit {
+  public taxForm: FormGroup;
   private rows: any = [];
   constructor(private _fb: FormBuilder,
-    private categoryService: CategoryService,
+    private taxService: TaxService,
     private router: Router) {
     }
     ngOnInit() {
      this.initForm();
     }
     initForm(){
-      this.categoryForm = this._fb.group({
+      this.taxForm = this._fb.group({
          name: ['', [Validators.required]],
-         desc:['']
+         code:[''],
+         rate:['', [Validators.required]],
+         type:['percentage', [Validators.required]]
        });
     }
     onAdd(){
-      this.categoryService.addCategory(this.categoryForm.value).subscribe(
-        res => res.status === 200 || res.status === 201 ? this.router.navigate(['/category']) : this.router.navigate(['/404'])
+      this.taxService.addTax(this.taxForm.value).subscribe(
+        res => res.status === 200 || res.status === 201 ? this.router.navigate(['/tax']) : this.router.navigate(['/404'])
      );
     }
 }

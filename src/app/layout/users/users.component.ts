@@ -13,7 +13,7 @@ import 'rxjs/add/operator/map';
     animations: [routerTransition()]
 })
 export class UsersComponent implements OnInit {
-    private rows: any = [];
+    public rows: any = [];
     columns = [];
     loading: boolean = false;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;

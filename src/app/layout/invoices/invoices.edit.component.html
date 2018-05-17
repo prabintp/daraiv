@@ -1,64 +1,161 @@
 
-            <form role="form" (ngSubmit)="onEdit()" class="row" #f="ngForm">
+<form  [formGroup]="invoiceForm" (ngSubmit)="onEdit()" class="row">
 
-              <div class="col-md-6">
+  <div class="col-md-6">
+    <fieldset class="form-group col-md-6">
+      <label>Invoice#</label>
+        <input [class.is-invalid]="invoiceForm.controls.invoice_number.touched && !invoiceForm.controls.invoice_number.valid" required name="name" formControlName="invoice_number" class="form-control validate ">
+        <div class="invalid-feedback">
+          Invoice ID is required.
+        </div>
 
-                <fieldset class="form-group">
-                    <label>Name</label>
-                    <input  required name="name" [(ngModel)]="invoicesdata.name" class="form-control validate">
-                </fieldset>
+    </fieldset>
+  </div>
 
-                <div class="row">
+  <div class="col-md-6">
+    <div class="row">
+      <fieldset class="form-group col-md-6">
+        <label>Invoice Date</label>
+        <div class="input-group datepicker-input">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                name="invdate" formControlName="invoice_date" ngbDatepicker #d1="ngbDatepicker">
+            <button class="input-group-addon" (click)="d1.toggle()" type="button">
+                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                <span class="fa fa-calendar"></span>
+            </button>
+        </div>
+        <!--  <input required name='sku' [(ngModel)]="invoicesdata.sku" class="form-control" placeholder="****"> -->
+      </fieldset>
+      <div class="form-group col-md-6">
+        <label>Due Date</label>
+        <div class="input-group datepicker-input">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                name="dp" formControlName="invoice_due" ngbDatepicker #d2="ngbDatepicker">
+            <button class="input-group-addon" (click)="d2.toggle()" type="button">
+                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                <span class="fa fa-calendar"></span>
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
 
-                  <fieldset class="form-group col-md-6">
-                      <label>Item code</label>
-                      <input required name='sku' [(ngModel)]="invoicesdata.sku" class="form-control" placeholder="****">
-                  </fieldset>
+  <!--  <lineitems [group]="line_items"></lineitems> -->
 
-                  <div class="form-group col-md-6">
-                      <label>Quantity</label>
-                      <input required name='quantity' [(ngModel)]="invoicesdata.quantity" class="form-control">
-                  </div>
+    <div class="row">
+      <fieldset class="form-group col-md-3">
+        <label>Item Detais</label>
+      </fieldset>
+      <div class="form-group col-md-3">
+        <label>Quantity</label>
+      </div>
+      <fieldset class="form-group col-md-3">
+        <label>Rate</label>
+      </fieldset>
+      <fieldset class="form-group col-md-3">
+        <label>amount</label>
+      </fieldset>
+    </div>
+<div formArrayName="line_items">
+    <div  *ngFor="let row of lineItems.controls;  let i = index">
+    <div  class="row" [formGroupName]="i">
+    <fieldset class="form-group col-md-3">
+      <!-- <md-input ngui-auto-complete
+        style="width:100%"
+        id="model6"
+        [(ngModel)]="myModel"
+        [source]="arrayOfNumbers"
+        [list-formatter]="rightAligned"
+        placeholder="amount" align="end">
+        <span md-prefix>$&nbsp;</span>
+        <span md-suffix>.00</span>
+      </md-input>-->
+        <!--   -->
+      <input  ngui-auto-complete
+                  [source]="continents"
+                  formControlName="item_name"
+                  name="item_id"
+                  value-property-name="sku"
+                  value-property-name="item_id"
+                  display-property-name="name"
+                  (valueChanged)="onChangeItem($event,i,1)"
+                  [value-formatter]="myValueFormatter"
+                  [list-formatter]="autocompleItems"
+                  [select-on-blur]="true"
+                  [re-focus-after-select]="false"
+                  [open-on-focus]="false"
+                  placeholder="Select items"
+                  class="form-control">
+    <input type="hidden" name='item_name' formControlName="item_name"  class="form-control">
+    <input type="hidden" name='item_id' formControlName="item_id"  class="form-control">
+    <input type="hidden" name='tax_rate' formControlName="tax_rate"  class="form-control">
+    <input type="hidden" name='tax_type' formControlName="tax_type"  class="form-control">
+      <!--  <input required name='sku' [(ngModel)]="row.line_items" class="form-control" placeholder="****">-->
+    </fieldset>
+    <div class="form-group col-md-3">
+      <input type="text" name='quantity' formControlName="quantity"  class="form-control">
+    </div>
+    <fieldset class="form-group col-md-3">
+        <input readonly required name='rate' formControlName="rate"  class="form-control-plaintext" placeholder="">
+    </fieldset>
+    <div class="form-group col-md-3">
+      <input required name='item_total{{i}}' [(ngModel)]="item_total[i]" class="form-control-plaintext" readonly [ngModelOptions]="{standalone: true}" >
+    </div>
+  </div>
+   </div>
+ </div>
 
-                </div>
+ <div class="form-group row">
+   <fieldset class="form-group col-md-3">
+    <a (click)="addItemRow()"><i class="fa fa-plus fa-fw"></i> Add New Item Row</a>
+   </fieldset>
+    <label for="staticEmail" class="col-md-2 col-form-label offset-md-4 text-right">Sub Total</label>
+    <div class="col-md-2">
+       <input name='subtotal' formControlName="subtotal"  class="form-control-plaintext" placeholder="00" readonly>
+    </div>
+  </div>
+
+ <div class="form-group row">
+   <div class="col-md-3">
+     <fieldset class="form-group">
+       <label>Invoice status</label>
+       <select class="form-control" formControlName="status">
+           <option value="pending" [selected]="true" >Pending</option>
+           <option value="completed">Completed</option>
+       </select>
+     </fieldset>
+   </div>
+   <div class="col-md-3">
+     <fieldset class="form-group">
+       <label>Tax</label>
+       <select formControlName="tax" class="form-control">
+        <option value="0" [selected]="true">Choose an option</option>
+        <option *ngFor="let opt of taxRates" [value]="opt.id">{{opt.name}}</option>
+      </select>
+     </fieldset>
+   </div>
+
+    <label class="col-md-2 col-form-label offset-md-1 text-right" >Tax Amount</label>
+    <div class="col-md-2">
+     <input readonly name='totalTax' formControlName="totalTax"  class="form-control-plaintext" placeholder="00">
+    </div>
+ </div>
+
+ <div class="form-group row">
+    <label class="col-md-2 col-form-label offset-md-7 text-right">Total</label>
+    <div class="col-md-2">
+     <input readonly name='total' formControlName="total"  class="form-control-plaintext" placeholder="00">
+    </div>
+ </div>
+
+</div>
 
 
-                <div class="row">
 
-                <div class="form-group col-md-6">
-                    <label>Unit Price</label>
-                    <input name='unitprice' [(ngModel)]="invoicesdata.unitprice" class="form-control">
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label>Actual Price</label>
-                    <input name='actualprice' [(ngModel)]="invoicesdata.actualprice" class="form-control">
-                </div>
-
-              </div>
-
-              </div>
-              <div class="col-md-6">
-
-                <fieldset class="form-group">
-                    <label>Description</label>
-                    <textarea name='desc' [(ngModel)]="invoicesdata.desc" class="form-control" rows="3"></textarea>
-                </fieldset>
-                                <fieldset class="form-group">
-                                    <label>Notes</label>
-                                    <textarea name='notes' [(ngModel)]="invoicesdata.notes" class="form-control" rows="3"></textarea>
-                                </fieldset>
-
-
-
-
-
-              </div>
-
-              <div class="col-md-12">
-                <button type="submit" class="btn btn-secondary" [disabled]="!(f.valid)">Submit Button</button>
-                <button type="reset" class="btn btn-secondary">Reset Button</button>
-              </div>
-
-
-            </form>
+<div class="col-md-12">
+  <button type="submit" class="btn btn-primary">Save</button>
+  <button type="reset" [routerLink]="['/invoices']" class="btn btn-secondary">cancel</button>
+<!--  <div class="row" >{{invoiceForm.value | json}}</div> -->
+</div>
+</form>

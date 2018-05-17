@@ -24,7 +24,6 @@ import {
     RegisterData,
     UpdatePasswordData,
     ResetPasswordData,
-
     UserType,
     UserData,
     AuthData,
@@ -205,10 +204,12 @@ export class AuthTokenService implements CanActivate {
 
         observ.subscribe(res => this.currentUserData = res.json().user, _error => null);
 
+        this.atOptions.globalOptions.headers = {
+            'Content-Type': 'application/json'
+        };
+
       //  currentUserData();
         console.log(this.atCurrentUserData);
-
-
         return observ;
     }
 
@@ -276,6 +277,11 @@ export class AuthTokenService implements CanActivate {
             res => {
               this.atCurrentUserData = res.json();
               console.log(this.atCurrentUserData);
+              let shop = this.atCurrentUserData.shops.find(function(item){if(item.isactive == true) return true});
+              let shops = this.atCurrentUserData.shops;
+              localStorage.setItem('currentShop', JSON.stringify(shop)),
+              localStorage.setItem('shops', JSON.stringify(shops)),
+              this.getAuthDataFromStorage();
               // this.authService.userSignedIn$.next(true);
             },
             error => {
@@ -584,6 +590,10 @@ export class AuthTokenService implements CanActivate {
 
             if (this.atCurrentUserType != null)
                 localStorage.setItem('userType', this.atCurrentUserType.name);
+
+            if (this.atCurrentAuthData){
+                this.validateToken();
+            }
 
         }
     }

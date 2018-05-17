@@ -2,28 +2,27 @@ import { Injectable } from '@angular/core';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {Router} from '@angular/router';
 import { routerTransition } from '../../router.animations';
-import { ItemsService } from './items.service';
+import { TaxService } from './tax.service';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 @Injectable()
 @Component({
-    selector: 'app-items',
-    templateUrl: './items.list.component.html',
-    styleUrls: ['./items.component.scss'],
+    selector: 'app-tax',
+    templateUrl: './tax.list.component.html',
+  //  styleUrls: ['./tax.component.scss'],
     animations: [routerTransition()]
 })
-export class ItemsListComponent implements OnInit {
+export class TaxListComponent implements OnInit {s
     public rows: any = [];
     temp = [];
     columns = [];
     loading: boolean = false;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
-    @ViewChild('categoryTmpl') categoryTmpl: TemplateRef<any>;
-    constructor(private itemsService: ItemsService, private router: Router) {
+    constructor(private taxService: TaxService, private router: Router) {
         this.loading = true;
-        this.itemsService.getItems().subscribe(
+        this.taxService.getTax().subscribe(
           res => { if (res.status === 200 || res.status === 304) {
             let resdata = res.json().rows;
             this.rows = res.json().rows;
@@ -39,16 +38,10 @@ export class ItemsListComponent implements OnInit {
     ngOnInit() {
 
       this.columns = [
-        {
-          name: 'sku'
-        },
         { prop: 'name' },
-        { name: 'desc' },
-        {
-          cellTemplate: this.categoryTmpl,
-          name: 'category' },
-        { name: 'unitprice' },
-        { name: 'quantity' },
+        { name: 'code' },
+        { name: 'rate' },
+        { name: 'type' },
         {
           cellTemplate: this.editTmpl,
           headerTemplate: this.hdrTpl,
@@ -59,7 +52,7 @@ export class ItemsListComponent implements OnInit {
     }
 
     onDelete(id){
-      this.itemsService.deleteItem(id).subscribe(
+      this.taxService.deleteItem(id).subscribe(
         res =>{if (res.status === 200 || res.status === 204){
           this.rows = this.rows.filter(function(d) {
             return d.id !== id ;
@@ -77,11 +70,6 @@ export class ItemsListComponent implements OnInit {
     if(field == 'name'){
       const temp = this.temp.filter(function(d) {
         return d.name.toLowerCase().indexOf(val) !== -1 || !val ;
-      });
-      this.rows = temp;
-    }else {
-      const temp = this.temp.filter(function(d) {
-        return d.sku.toLowerCase().indexOf(val) !== -1 || !val ;
       });
       this.rows = temp;
     }

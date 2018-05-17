@@ -3,69 +3,66 @@ import {Router, ActivatedRoute} from '@angular/router';
 import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { routerTransition } from '../../router.animations';
-import { CategoryService } from './category.service';
+import { TaxService } from './tax.service';
+import { Tax } from './tax.interface';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 @Injectable()
 @Component({
-    selector: 'app-category',
-    templateUrl: './category.edit.component.html',
-  //  styleUrls: ['./category.component.scss'],
+    selector: 'app-tax',
+    templateUrl: './tax.edit.component.html',
+  //  styleUrls: ['./tax.component.scss'],
     animations: [routerTransition()]
 })
-export class CategoryEditComponent implements OnInit {
-  public categoryForm: FormGroup;
+export class TaxEditComponent implements OnInit {
+  public taxForm: FormGroup;
   private rows: any = [];
   currentItemID: any;
-  categorydata = {
-    desc: '',
-    name: ''
-  };
+  taxdata: Tax;
     constructor(
       private _fb: FormBuilder,
-      private categoryService: CategoryService,
+      private taxService: TaxService,
       private router: Router,
       private route: ActivatedRoute) {
     }
     ngOnInit() {
       this.initForm();
       this.currentItemID = this.route.snapshot.params['id'];
-      this.getCategory(this.currentItemID);
+      this.getTax(this.currentItemID);
     }
 
     initForm(){
-      this.categoryForm = this._fb.group({
+      this.taxForm = this._fb.group({
          name: ['', [Validators.required]],
-         desc:['']
+         code:[''],
+         rate:['', [Validators.required]],
+         type:['percentage', [Validators.required]]
        });
     }
 
     private patchForm() {
-      this.categoryForm.setValue({
-        name: this.categorydata.name,
-        desc: this.categorydata.desc
-      });
+      this.taxForm.patchValue(this.taxdata);
     }
 
 
-    getCategory(id) {
-      this.categoryService.getCategoryByID(id).subscribe(
+    getTax(id) {
+      this.taxService.getTaxByID(id).subscribe(
         res => { if (res.status === 200 || res.status === 304) {
         //  let resdata = res.json().rows;
-          this.categorydata = res.json();
+          this.taxdata = res.json();
           this.patchForm();
        }
       else{
-        // this.categorydata = []
+        // this.taxdata = []
        }
      }
 
      );
    }
     onEdit(){
-      this.categoryService.editCategory(this.categoryForm.value, this.currentItemID).subscribe(
-        res => res.status === 200 || res.status === 201 ? this.router.navigate(['/category']) : this.router.navigate(['/404'])
+      this.taxService.editTax(this.taxForm.value, this.currentItemID).subscribe(
+        res => res.status === 200 || res.status === 201 ? this.router.navigate(['/tax']) : this.router.navigate(['/404'])
      );
     }
 
