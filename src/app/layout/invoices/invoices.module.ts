@@ -15,6 +15,7 @@ import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ItemsService } from '../items/items.service';
 import { TaxService } from '../tax/tax.service';
+import { ContactsService } from '../contacts/contacts.service';
 
 import { LineitemsComponent } from '../components/lineitems/lineitems.component';
 
@@ -26,6 +27,6 @@ import { LineitemsComponent } from '../components/lineitems/lineitems.component'
         FormsModule, NguiAutoCompleteModule],
     declarations: [InvoicesComponent, InvoicesAddComponent,
       InvoicesListComponent, InvoicesEditComponent, LineitemsComponent],
-    providers: [InvoicesService, ItemsService, TaxService]
+    providers: [InvoicesService, ItemsService, TaxService, ContactsService]
 })
 export class InvoicesModule {}

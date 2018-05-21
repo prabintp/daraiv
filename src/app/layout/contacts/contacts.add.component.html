@@ -1,0 +1,68 @@
+<form [formGroup]="contactsForm" (ngSubmit)="onSubmit()" class="row">
+  <div class="col-12">
+    <fieldset class="form-group">
+        <label>Contact Type:</label>
+        <label></label>
+        <label class="radio-inline">
+            <input type="radio" formControlName="type" name="type" id="type" value="c" checked=""> Customer
+        </label>
+        <label class="radio-inline">
+            <input type="radio" formControlName="type" name="type" id="type" value="v"> Vendor
+        </label>
+        <label class="radio-inline">
+            <input type="radio" formControlName="type" name="type" id="type" value="s"> Sales Person
+        </label>
+    </fieldset>
+  </div>
+  <div class="col-md-6">
+    <fieldset class="form-group">
+        <label>Name</label>
+        <input [class.is-invalid]="contactsForm.controls.name.touched && !contactsForm.controls.name.valid" required name="name" formControlName="name" class="form-control validate ">
+        <div class="invalid-feedback">
+          Item Name is required.
+        </div>
+    </fieldset>
+
+    <div class="row">
+      <fieldset class="form-group col-6">
+          <label>Company Name</label>
+          <input [class.is-invalid]="contactsForm.controls.company.touched && !contactsForm.controls.company.valid" required name="company" formControlName="company" class="form-control validate ">
+          <div class="invalid-feedback">
+            Item company is required.
+          </div>
+      </fieldset>
+      <div class="form-group col-6">
+          <label>Contact email</label>
+          <input name="email" formControlName="email" class="form-control validate ">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-4">
+          <label>Phone</label>
+          <input placeholder="Work" name="phone" formControlName="phone" class="form-control validate ">
+      </div>
+
+      <div class="form-group col-4">
+          <label> </label>
+          <input   name="mobile" formControlName="mobile" class="form-control validate " placeholder="Mobile">
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-6">
+    <fieldset class="form-group">
+        <label>Billing Address</label>
+        <textarea name='baddress' formControlName="baddress" class="form-control" rows="3"></textarea>
+    </fieldset>
+    <fieldset class="form-group">
+        <label>Shipping Address</label>
+        <textarea name='saddress' formControlName="saddress" class="form-control" rows="3"></textarea>
+    </fieldset>
+  </div>
+  <div class="col-md-12">
+    <button type="submit" class="btn btn-secondary" [disabled]="!(contactsForm.valid)">Submit Button</button>
+    <button type="reset" class="btn btn-secondary">Reset Button</button>
+  <!--  <div class="row" >{{contactsForm.value | json}}</div> -->
+  </div>
+</form>

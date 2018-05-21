@@ -1,8 +1,7 @@
+<form  [formGroup]="invoiceForm" (ngSubmit)="onSubmit()" class="">
 
-<form  [formGroup]="invoiceForm" (ngSubmit)="onEdit()" class="row">
-
-  <div class="col-md-6">
-    <fieldset class="form-group col-md-6">
+  <div class="row">
+    <fieldset class="form-group col-6 col-md-3">
       <label>Invoice#</label>
         <input [class.is-invalid]="invoiceForm.controls.invoice_number.touched && !invoiceForm.controls.invoice_number.valid" required name="name" formControlName="invoice_number" class="form-control validate ">
         <div class="invalid-feedback">
@@ -10,11 +9,31 @@
         </div>
 
     </fieldset>
-  </div>
 
-  <div class="col-md-6">
-    <div class="row">
-      <fieldset class="form-group col-md-6">
+    <fieldset class="form-group col-6 col-md-3">
+      <label>Customer</label>
+      <input  ngui-auto-complete
+                  [source]="customerData"
+                  value-property-name="name"
+                  display-property-name="name"
+                 (valueChanged)="onChangeCustomer($event)"
+                  [value-formatter]="myValueFormatter"
+                  [list-formatter]="autocompleCustomer"
+                  [select-on-blur]="true"
+                  [re-focus-after-select]="false"
+                  [open-on-focus]="false"
+                  placeholder="Select items"
+                  class="form-control">
+
+    </fieldset>
+    <input type="hidden" name='customer' formControlName="customer"  class="form-control">
+
+
+
+
+
+
+      <fieldset class="form-group col-md-3 col-6">
         <label>Invoice Date</label>
         <div class="input-group datepicker-input">
             <input class="form-control" placeholder="yyyy-mm-dd"
@@ -26,7 +45,7 @@
         </div>
         <!--  <input required name='sku' [(ngModel)]="invoicesdata.sku" class="form-control" placeholder="****"> -->
       </fieldset>
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-3 col-6">
         <label>Due Date</label>
         <div class="input-group datepicker-input">
             <input class="form-control" placeholder="yyyy-mm-dd"
@@ -37,30 +56,49 @@
             </button>
         </div>
       </div>
+
     </div>
-  </div>
-  <div class="col-md-12">
+
+    <div class="row">
+      <fieldset class="form-group col-6 col-md-4">
+        <label>Sales Person</label>
+        <input  ngui-auto-complete
+                    [source]="customerData"
+                    value-property-name="name"
+                    display-property-name="name"
+                   (valueChanged)="onChangeSalesPerson($event)"
+                    [value-formatter]="myValueFormatter"
+                    [list-formatter]="autocompleCustomer"
+                    [select-on-blur]="true"
+                    [re-focus-after-select]="false"
+                    [open-on-focus]="false"
+                    placeholder="Select items"
+                    class="form-control">
+
+      </fieldset>
+      <input type="hidden" name='sales_person' formControlName="sales_person"  class="form-control">
+    </div>
 
   <!--  <lineitems [group]="line_items"></lineitems> -->
 
     <div class="row">
-      <fieldset class="form-group col-md-3">
+      <fieldset class="form-group col-md-3 col-4">
         <label>Item Detais</label>
       </fieldset>
-      <div class="form-group col-md-3">
+      <div class="form-group col-md-3 col-3">
         <label>Quantity</label>
       </div>
-      <fieldset class="form-group col-md-3">
+      <fieldset class="form-group col-md-3 col-2">
         <label>Rate</label>
       </fieldset>
-      <fieldset class="form-group col-md-3">
+      <fieldset class="form-group col-md-3 col-3">
         <label>amount</label>
       </fieldset>
     </div>
 <div formArrayName="line_items">
     <div  *ngFor="let row of lineItems.controls;  let i = index">
     <div  class="row" [formGroupName]="i">
-    <fieldset class="form-group col-md-3">
+    <fieldset class="form-group col-md-3 col-4">
       <!-- <md-input ngui-auto-complete
         style="width:100%"
         id="model6"
@@ -93,31 +131,36 @@
     <input type="hidden" name='tax_type' formControlName="tax_type"  class="form-control">
       <!--  <input required name='sku' [(ngModel)]="row.line_items" class="form-control" placeholder="****">-->
     </fieldset>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-3 col-3">
       <input type="text" name='quantity' formControlName="quantity"  class="form-control">
     </div>
-    <fieldset class="form-group col-md-3">
+    <fieldset class="form-group col-md-3 col-2">
         <input readonly required name='rate' formControlName="rate"  class="form-control-plaintext" placeholder="">
     </fieldset>
-    <div class="form-group col-md-3">
+    <div class="form-group col-2">
       <input required name='item_total{{i}}' [(ngModel)]="item_total[i]" class="form-control-plaintext" readonly [ngModelOptions]="{standalone: true}" >
     </div>
+
+    <div class="form-group col-1">
+      <a href="#" title="Remove Item" class="badge badge-info" (click)="removeLineitems(i)"><i class="fa fa-minus fa-fw"></i></a>
+    </div>
+
   </div>
    </div>
  </div>
 
  <div class="form-group row">
-   <fieldset class="form-group col-md-3">
-    <a (click)="addItemRow()"><i class="fa fa-plus fa-fw"></i> Add New Item Row</a>
+   <fieldset class="form-group col-md-3 col-5">
+    <a (click)="addItemRow()" href="#" class="badge badge-info"><i class="fa fa-plus fa-fw"></i> Add Items</a>
    </fieldset>
-    <label for="staticEmail" class="col-md-2 col-form-label offset-md-4 text-right">Sub Total</label>
-    <div class="col-md-2">
+    <label for="staticEmail" class="col-md-2 col-3 col-form-label offset-2 offset-md-4 text-right">Sub Total</label>
+    <div class="col-md-2 col-2">
        <input name='subtotal' formControlName="subtotal"  class="form-control-plaintext" placeholder="00" readonly>
     </div>
   </div>
 
  <div class="form-group row">
-   <div class="col-md-3">
+   <div class="col-md-3 col-4">
      <fieldset class="form-group">
        <label>Invoice status</label>
        <select class="form-control" formControlName="status">
@@ -126,7 +169,7 @@
        </select>
      </fieldset>
    </div>
-   <div class="col-md-3">
+   <div class="col-md-3 col-4">
      <fieldset class="form-group">
        <label>Tax</label>
        <select formControlName="tax" class="form-control">
@@ -136,26 +179,27 @@
      </fieldset>
    </div>
 
-    <label class="col-md-2 col-form-label offset-md-1 text-right" >Tax Amount</label>
-    <div class="col-md-2">
+    <label class="col-md-2 col-2 col-form-label offset-md-1 text-right" >Tax Amount</label>
+    <div class="col-md-2 col-2">
      <input readonly name='totalTax' formControlName="totalTax"  class="form-control-plaintext" placeholder="00">
     </div>
  </div>
 
+
  <div class="form-group row">
-    <label class="col-md-2 col-form-label offset-md-7 text-right">Total</label>
-    <div class="col-md-2">
+    <label class="col-md-2 col-3 col-form-label offset-7 offset-md-7 text-right">Total</label>
+    <div class="col-md-2 col-2">
      <input readonly name='total' formControlName="total"  class="form-control-plaintext" placeholder="00">
     </div>
  </div>
 
-</div>
 
 
 
-<div class="col-md-12">
-  <button type="submit" class="btn btn-primary">Save</button>
-  <button type="reset" [routerLink]="['/invoices']" class="btn btn-secondary">cancel</button>
-<!--  <div class="row" >{{invoiceForm.value | json}}</div> -->
-</div>
+
+  <div class="col-md-12">
+    <button type="submit" class="btn btn-primary">Submit Button</button>
+    <button type="reset" [routerLink]="['/invoices']" class="btn btn-secondary">cancel</button>
+   <div class="row" >{{invoiceForm.value | json}}</div>
+  </div>
 </form>
