@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import { routerTransition } from '../../router.animations';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
+import { InvoicesViewComponent } from './invoices.view.component';
 import { InvoicesService } from './invoices.service';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
@@ -21,7 +24,14 @@ export class InvoicesListComponent implements OnInit {
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('dateTpl') dateTpl: TemplateRef<any>;
-    constructor(private invoicesService: InvoicesService, private router: Router) {
+    constructor(private invoicesService: InvoicesService,
+       private router: Router,
+       private activatedRoute: ActivatedRoute,
+       private modalService: NgbModal
+     ){
+       // same as above
+      //  this.activatedRoute.url.subscribe((url: urlSegment)=> console.log(url[0].path));
+       console.log(this.router.routerState.snapshot.url);
         this.loading = true;
         this.invoicesService.getInvoices().subscribe(
           res => { if (res.status === 200 || res.status === 304) {
@@ -41,7 +51,10 @@ export class InvoicesListComponent implements OnInit {
       this.columns = [
         { prop: 'invoice_number' },
         { prop: 'status' },
-        { name: 'total' },
+        { prop: 'customer_name',
+          name: 'Customer' },
+        { prop: 'total' },
+
         {
           cellTemplate: this.editTmpl,
           headerTemplate: this.hdrTpl,
@@ -60,6 +73,12 @@ export class InvoicesListComponent implements OnInit {
         }}
      );
     }
+
+    openPrintView(invoiceId) {
+      const modalRef = this.modalService.open(InvoicesViewComponent, { size: 'lg' });
+      modalRef.componentInstance.invoiceId = invoiceId;
+      return false;
+    };
 
     updateFilter(event) {
     const val = event.target.value.toLowerCase();

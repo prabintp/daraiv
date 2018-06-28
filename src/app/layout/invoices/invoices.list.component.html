@@ -30,13 +30,13 @@
             <ng-template #hdrTpl let-column="column" >
              <strong>Action</strong>
             </ng-template>
-            <ng-template #dateTpl let-row="row" let-value="value">
-             {{value | json}}
-           </ng-template>
+          <!--  <ng-template #dateTpl let-row="row" let-value="value">
+             {{value.day}}
+           </ng-template> -->
             <ng-template #editTmpl let-row="row" let-value="value">
-             <a [routerLink]="['./edit', value]" class="btn btn-success"><i class="fa fa-edit"></i></a>
+             <a [routerLink]="['./edit', value]" title="Edit" class=""><i class="fa fa-edit"></i></a>
              <app-modal (onSuccess)="onDelete(value)" [title]="Confirm" [bodyContent]="'Confirm your Item delete action.'"></app-modal>
-
+             <a (click)="openPrintView(value)" title="View Details" class=""><i class="fa fa-eye"></i></a>
            </ng-template>
 
           </div>

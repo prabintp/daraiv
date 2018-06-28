@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import { Component, OnInit} from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
 import { InvoicesService } from './invoices.service';
+import { InvoicesViewComponent } from './invoices.view.component';
 import { ItemsService } from '../items/items.service';
 import { TaxService } from '../tax/tax.service';
 import { ContactsService } from '../contacts/contacts.service';
@@ -41,8 +44,10 @@ export class InvoicesEditComponent implements OnInit {
        private itemsService: ItemsService,
        private _contactsService: ContactsService,
        private _taxService: TaxService,
-        private route: ActivatedRoute) {
-
+       private route: ActivatedRoute,
+       private modalService: NgbModal
+     ) {
+        console.log(this.router.routerState.snapshot.url+'urll');
           this.itemsService.getItems().subscribe(
             res => { if (res.status === 200 || res.status === 304) {
               let resdata = res.json().rows;
@@ -66,6 +71,8 @@ export class InvoicesEditComponent implements OnInit {
          }
        }
       );
+
+
 
       this._contactsService.getContacts().subscribe(
         res => { if (res.status === 200 || res.status === 304) {
@@ -100,6 +107,9 @@ export class InvoicesEditComponent implements OnInit {
                 ])
               });
 
+
+
+
                this.bInit();
     }
     ngOnInit() {
@@ -124,7 +134,7 @@ export class InvoicesEditComponent implements OnInit {
                    self.item_total[a] = itotal;
                    subtotal = subtotal + itotal;
                    self.invoiceForm.controls['subtotal'].setValue((subtotal).toFixed(2));
-                   self.invoiceForm.controls['total'].setValue(subtotal  + parseFloat(self.invoiceForm.value.totalTax).toFixed(2));
+                   self.invoiceForm.controls['total'].setValue((subtotal  + parseFloat(self.invoiceForm.value.totalTax)).toFixed(2));
                    self.invoiceForm.controls['tax'].setValue(self.invoiceForm.value.tax);
                  });
                });
@@ -143,7 +153,7 @@ export class InvoicesEditComponent implements OnInit {
                   let selectedTax = self.taxRates.find(function(itm) {
                     return itm.id == value;
                   });
-                  console.log(selectedTax.id);
+                //  console.log(selectedTax.id);
                   let total_tax = (selectedTax.type === 'fixed') ? selectedTax.rate : parseInt(self.invoiceForm.value.subtotal) * (parseInt(selectedTax.rate)/100) ;
                   self.invoiceForm.controls['totalTax'].setValue(parseFloat(total_tax).toFixed(2));
                   self.invoiceForm.controls['tax_type'].setValue(selectedTax.type);
@@ -177,42 +187,18 @@ export class InvoicesEditComponent implements OnInit {
       this.invoiceForm.get('line_items');
    }
 
+   openModal() {
+     const modalRef = this.modalService.open(InvoicesViewComponent, { size: 'lg' });
+     modalRef.componentInstance.invoiceId = this.currentItemID;
+     return false;
+   };
+
    private patchForm() {
      let self = this;
      for(let i=1; this.invoiceData.line_items.length > i ; i++){
        this.addItemRow();
      }
-    /* this.invoiceForm.patchValue({
-       invoice_number: this.invoiceData.invoice_number,
-       invoice_date: this.invoiceData.invoice_date,
-       name:'sds',
-       invoice_due:this.invoiceData.invoice_due,
-       subtotal:this.invoiceData.subtotal,
-       total:this.invoiceData.total,
-       discount:12,
-       line_items:this.invoiceData.line_items
-
-
-     });*/
-
-
      this.invoiceForm.patchValue(this.invoiceData);
-      // this.invoiceForm.setControl('line_items', this._fb.array(this.invoiceData.line_items || []));
-
-  //  this.lineItems.patchValue(this.invoiceData.line_items || []);
-  /*  const control = <FormArray>this.invoiceForm.controls['line_items'];
-    this.lineItems.controls.forEach(function(a,b){
-      a.patchValue(self.invoiceData.line_items[b]);
-    })*/
-
-  /*  const control = <FormArray>this.invoiceForm.controls['line_items'];
-    control.push(this._fb.group({
-        item_id: ['', Validators.required],
-        quantity: ['32'],
-        rate: ['34'],
-        item_total: ['44']
-    }));*/
-
    }
 
 
@@ -232,7 +218,17 @@ export class InvoicesEditComponent implements OnInit {
      );
    }
     onSubmit(){
-      this.invoicesService.editInvoices(this.invoiceForm.value, this.currentItemID).subscribe(
+      var invdata = this.invoiceForm.value;
+      if(invdata.sales_person === ''){
+        delete invdata.sales_person;
+      }
+
+      if(invdata.customer === ''){
+        delete invdata.customer;
+      }
+
+
+      this.invoicesService.editInvoices(invdata, this.currentItemID).subscribe(
         res => res.status === 200 || res.status === 201 ? this.router.navigate(['/invoices']) : this.router.navigate(['/404'])
      );
     }

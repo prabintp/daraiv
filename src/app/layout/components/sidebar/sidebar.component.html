@@ -67,6 +67,14 @@
             </li>
         </div>
 
+        <a [routerLink]="['/salesorders']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+              <i class="fa fa-fw fa-user"></i>&nbsp;{{ 'Sales Orders' | translate }}
+          </a>
+
+          <a [routerLink]="['/purchaseorders']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                <i class="fa fa-fw fa-user"></i>&nbsp;{{ 'Purchase Orders' | translate }}
+            </a>
+
         <div class="nested-menu">
             <a class="list-group-item" (click)="addExpandClass('pages')">
                 <span><i class="fa fa-fax"></i>&nbsp; {{ 'Sales' | translate }}</span>
@@ -104,6 +112,11 @@
                     <li>
                         <a [routerLink]="['/tax']" [routerLinkActive]="['router-link-active']" class="list-group-item">
                             <i class="fa fa-industry"></i>&nbsp;{{ 'Tax Rate' | translate }}
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/organisation']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+                            <i class="fa fa-industry"></i>&nbsp;{{ 'Manage Organisation' | translate }}
                         </a>
                     </li>
                 </ul>

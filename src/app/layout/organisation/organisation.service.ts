@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import {AuthTokenService} from '../../auth-token/auth-token.service'
-
+import {AuthTokenService} from '../../auth-token/auth-token.service';
 import {
     Response
 } from '@angular/http';
@@ -10,18 +9,18 @@ import { Observable } from 'rxjs/Observable';
 
 
 @Injectable()
-export class InvoicesService {
+export class OrganisationService {
 
   constructor(private authService: AuthTokenService) { }
   //private userOptions: any;
 
   private itemData: any;
   private userOptions: any = {
-    userPath: 'invoices'
+    userPath: 'shops'
   }
 
   // Validate token request
-  getInvoicesByID(id): Observable<Response> {
+  getOrganisationByID(id): Observable<Response> {
 
       let observ = this.authService.get(this.userOptions.userPath +'/'+id+'?access_token='+this.authService.currentAuthData.accessToken);
 
@@ -40,30 +39,14 @@ export class InvoicesService {
           return observ;
   }
 
-  // Validate token request
-  getInvoicesViewByID(id): Observable<Response> {
+  getOrganisation(): Observable<Response> {
+    let shopParam = '';
+    if (this.authService.currentAuthData.currentShop !== "undefined")
+    {
+      shopParam = '&shop='+JSON.parse(this.authService.currentAuthData.currentShop).sid.id;
+    }
 
-      let observ = this.authService.get(this.userOptions.userPath +'/'+id+'/view?access_token='+this.authService.currentAuthData.accessToken);
-
-      observ.subscribe(
-          res => {
-            this.itemData = res.json();
-            console.log(this.itemData);
-            // this.authService.userSignedIn$.next(true);
-          },
-          error => {
-              if (error.status === 401) {
-                ///  this.signOut();
-              }
-          });
-
-          return observ;
-  }
-
-
-  getInvoices(): Observable<Response> {
-
-      let observ = this.authService.get(this.userOptions.userPath +'?access_token='+this.authService.currentAuthData.accessToken+'&shop='+JSON.parse(this.authService.currentAuthData.currentShop).sid.id);
+      let observ = this.authService.get(this.userOptions.userPath +'?access_token='+this.authService.currentAuthData.accessToken+shopParam);
 
       observ.subscribe(
           res => {
@@ -82,7 +65,7 @@ export class InvoicesService {
 
 
   // Validate token request
-  addInvoices(body): Observable<Response> {
+  addOrganisation(body): Observable<Response> {
     body.access_token = this.authService.currentAuthData.accessToken;
     body.shop = JSON.parse(this.authService.currentAuthData.currentShop).sid.id;
     body.createdBy = this.authService.currentAuthData.uid;
@@ -104,8 +87,9 @@ export class InvoicesService {
   }
 
   // Validate token request
-  editInvoices(body, id): Observable<Response> {
+  editOrganisation(body, id): Observable<Response> {
     body.access_token = this.authService.currentAuthData.accessToken;
+    body.createdBy = this.authService.currentAuthData.uid;
     let observ = this.authService.put(this.userOptions.userPath+'/'+id, body);
       observ.subscribe(
           res => {
@@ -138,8 +122,6 @@ export class InvoicesService {
 
           return observ;
   }
-
-
 
 
 }

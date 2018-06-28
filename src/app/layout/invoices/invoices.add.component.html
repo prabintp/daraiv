@@ -129,8 +129,8 @@
                   class="form-control">
     <input type="hidden" name='item_name' formControlName="item_name"  class="form-control">
     <input type="hidden" name='item_id' formControlName="item_id"  class="form-control">
-    <input type="hidden" name='tax_rate' formControlName="tax_rate"  class="form-control">
-    <input type="hidden" name='tax_type' formControlName="tax_type"  class="form-control">
+    <!--<input type="hidden" name='tax_rate' formControlName="tax_rate"  class="form-control">
+    <input type="hidden" name='tax_type' formControlName="tax_type"  class="form-control"> -->
       <!--  <input required name='sku' [(ngModel)]="row.line_items" class="form-control" placeholder="****">-->
     </fieldset>
     <div class="form-group col-md-3 col-3">
@@ -200,8 +200,9 @@
 
 
   <div class="col-md-12">
-    <button type="submit" class="btn btn-primary">Submit Button</button>
+    <button type="submit" class="btn btn-primary">Submit Button1</button>
     <button type="reset" [routerLink]="['/invoices']" class="btn btn-secondary">cancel</button>
+    <!--<button  (click)="openModal()" class="btn btn-primary">Print view</button> -->
   <!-- <div class="row" >{{invoiceForm.value | json}}</div> -->
   </div>
 </form>

@@ -1,0 +1,23 @@
+.inv-print{
+  .txt-rgt{
+    text-align: justify; /* For Edge */
+ -moz-text-align-last: right; /* For Firefox prior 58.0 */
+ text-align-last: right;
+  }
+  padding: 15px;
+  .invoice-title h2, .invoice-title h3 {
+      display: inline-block;
+  }
+
+  .table > tbody > tr > .no-line {
+      border-top: none;
+  }
+
+  .table > thead > tr > .no-line {
+      border-bottom: none;
+  }
+
+  .table > tbody > tr > .thick-line {
+      border-top: 2px solid;
+  }
+}

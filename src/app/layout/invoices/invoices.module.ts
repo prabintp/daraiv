@@ -7,6 +7,7 @@ import { InvoicesRoutingModule } from './invoices-routing.module';
 import { InvoicesComponent } from './invoices.component';
 import { InvoicesAddComponent } from './invoices.add.component';
 import { InvoicesListComponent } from './invoices.list.component';
+import { InvoicesViewComponent } from './invoices.view.component';
 import { PageHeaderModule, ModalModule } from './../../shared';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { InvoicesService } from './invoices.service';
@@ -26,7 +27,8 @@ import { LineitemsComponent } from '../components/lineitems/lineitems.component'
        ModalModule,
         FormsModule, NguiAutoCompleteModule],
     declarations: [InvoicesComponent, InvoicesAddComponent,
-      InvoicesListComponent, InvoicesEditComponent, LineitemsComponent],
-    providers: [InvoicesService, ItemsService, TaxService, ContactsService]
+      InvoicesListComponent, InvoicesEditComponent, LineitemsComponent,InvoicesViewComponent],
+    providers: [InvoicesService, ItemsService, TaxService, ContactsService],
+    entryComponents: [InvoicesViewComponent]
 })
 export class InvoicesModule {}

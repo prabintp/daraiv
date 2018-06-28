@@ -98,7 +98,9 @@ export class InvoicesAddComponent implements OnInit {
   this.bInit();
   }
 
-  ngOnInit(){};
+  ngOnInit(){
+    console.log(this.router.routerState.snapshot.url.split( '/' )[1]+'urll');
+  };
 
   bInit(): void  {
     let self = this;
@@ -112,7 +114,7 @@ export class InvoicesAddComponent implements OnInit {
         self.item_total[a] = itotal;
         subtotal = subtotal + itotal;
         self.invoiceForm.controls['subtotal'].setValue((subtotal).toFixed(2));
-        self.invoiceForm.controls['total'].setValue(subtotal  + parseFloat(self.invoiceForm.value.totalTax).toFixed(2));
+        self.invoiceForm.controls['total'].setValue( (subtotal  + parseFloat(self.invoiceForm.value.totalTax)).toFixed(2));
         self.invoiceForm.controls['tax'].setValue(self.invoiceForm.value.tax);
       });
     });
@@ -159,7 +161,16 @@ export class InvoicesAddComponent implements OnInit {
    }
 
     onSubmit(){
-      this.invoicesService.addInvoices(this.invoiceForm.value).subscribe(
+      var invdata = this.invoiceForm.value;
+      if(invdata.sales_person === ''){
+        delete invdata.sales_person;
+      }
+
+      if(invdata.customer === ''){
+        delete invdata.customer;
+      }
+
+      this.invoicesService.addInvoices(invdata).subscribe(
         res => res.status === 200 || res.status === 201 ? this.router.navigate(['/invoices']) : this.router.navigate(['/404'])
      );
     }
