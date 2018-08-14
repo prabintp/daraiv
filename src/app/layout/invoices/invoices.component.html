@@ -1,4 +1,4 @@
 <div [@routerTransition]>
-      <app-page-header activeurl="/invoices" addurl="/invoices/add" [heading]="'Invoices'" [icon]="'fa-table'"></app-page-header>
+      <app-page-header activeurl="/{{docType}}" addurl="/{{docType}}/add" [heading]="docType" [icon]="'fa-table'"></app-page-header>
     <router-outlet></router-outlet>
 </div>

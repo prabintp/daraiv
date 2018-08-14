@@ -61,9 +61,12 @@ export class InvoicesService {
   }
 
 
-  getInvoices(): Observable<Response> {
+  getInvoices(docType): Observable<Response> {
 
-      let observ = this.authService.get(this.userOptions.userPath +'?access_token='+this.authService.currentAuthData.accessToken+'&shop='+JSON.parse(this.authService.currentAuthData.currentShop).sid.id);
+      let observ = this.authService.get(this.userOptions.userPath +
+        '?access_token=' + this.authService.currentAuthData.accessToken +
+        '&doc_type=' + docType +
+        '&shop=' + JSON.parse(this.authService.currentAuthData.currentShop).sid.id);
 
       observ.subscribe(
           res => {

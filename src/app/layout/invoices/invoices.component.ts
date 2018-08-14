@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import {Router, RouterModule} from '@angular/router';
 @Injectable()
 @Component({
     selector: 'app-invoices',
@@ -9,7 +10,9 @@ import { routerTransition } from '../../router.animations';
     animations: [routerTransition()]
 })
 export class InvoicesComponent implements OnInit {
-    constructor() {
+    public docType: string;
+    constructor(private router: Router) {
+        this.docType = this.router.routerState.snapshot.url.split('/')[1];
     }
     ngOnInit() {}
 }

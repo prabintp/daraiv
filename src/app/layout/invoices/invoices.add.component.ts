@@ -24,8 +24,10 @@ export class InvoicesAddComponent implements OnInit {
   public rows: any = [];
   public item_total: any =[];
   public res: any = [];
+
 //  public taxRates: any = [];
   private line_items1: any = [{item_id:'',quantity:'',rate:'',item_total:''}, {item_id:'',quantity:'',rate:'',item_total:''}];
+  docType: string;
 //  public lineItems;
   get lineItems() { return <FormArray>this.invoiceForm.get('line_items'); }
 
@@ -38,6 +40,8 @@ export class InvoicesAddComponent implements OnInit {
       private _taxService: TaxService,
       private _contactsService: ContactsService,
       private router: Router) {
+
+      this.docType = this.router.routerState.snapshot.url.split('/')[1];
       this.itemsService.getItems().subscribe(
         res => { if (res.status === 200 || res.status === 304) {
           let resdata = res.json().rows;
@@ -91,6 +95,7 @@ export class InvoicesAddComponent implements OnInit {
            sales_person:[''],
            customer_name:[''],
            sales_person_name:[''],
+           doc_type:[this.docType],
            line_items: this._fb.array([
                this.initLineitems(),
            ])

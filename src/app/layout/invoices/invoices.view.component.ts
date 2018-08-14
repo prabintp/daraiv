@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Component, OnInit, Input} from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import {Router} from '@angular/router';
 import {NgbModal, ModalDismissReasons, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { Printd } from 'printd';
 
@@ -26,14 +27,17 @@ export class InvoicesViewComponent implements OnInit {
   @Input() invoiceId;
 
   currentItemID: any;
+  docType: String;
+  docTypeView: String;
 
     constructor(
       private invoicesService: InvoicesService,
     //  private printit: printjs,
-       private modalService: NgbModal
+       private modalService: NgbModal,
+       private router: Router
      ) {
-
-
+      this.docType = this.router.routerState.snapshot.url.split('/')[1];
+      this.docTypeView = (this.docType === 'purchaseorders') ? 'Purchase Order' : this.docType === 'invoices' ? 'Invoice' : 'Sales Order';
     }
     printv() {
       const d = new Printd();

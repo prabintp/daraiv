@@ -20,7 +20,8 @@ export class InvoicesListComponent implements OnInit {
     public rows: any = [];
     temp = [];
     columns = [];
-    loading: boolean = false;
+    loading: Boolean = false;
+    docType: String;
     @ViewChild('editTmpl') editTmpl: TemplateRef<any>;
     @ViewChild('hdrTpl') hdrTpl: TemplateRef<any>;
     @ViewChild('dateTpl') dateTpl: TemplateRef<any>;
@@ -31,9 +32,10 @@ export class InvoicesListComponent implements OnInit {
      ){
        // same as above
       //  this.activatedRoute.url.subscribe((url: urlSegment)=> console.log(url[0].path));
-       console.log(this.router.routerState.snapshot.url);
+      this.docType = this.router.routerState.snapshot.url.split('/')[1];
+       console.log(this.router.routerState.snapshot.url[1]);
         this.loading = true;
-        this.invoicesService.getInvoices().subscribe(
+        this.invoicesService.getInvoices(this.docType).subscribe(
           res => { if (res.status === 200 || res.status === 304) {
             let resdata = res.json().rows;
             this.rows = res.json().rows;
@@ -47,12 +49,13 @@ export class InvoicesListComponent implements OnInit {
 
     }
     ngOnInit() {
-
+     
       this.columns = [
-        { prop: 'invoice_number' },
+        { prop: 'invoice_number',
+          name:  'ID#'},
         { prop: 'status' },
         { prop: 'customer_name',
-          name: 'Customer' },
+          name: this.docType === 'purchaseorders' ? 'Vendor' : 'Customer' },
         { prop: 'total' },
 
         {

@@ -26,6 +26,7 @@ export class InvoicesEditComponent implements OnInit {
   public item_total: any =[];
   public rows: any = [];
   get lineItems() { return <FormArray>this.invoiceForm.get('line_items'); }
+  docType: string;
   currentItemID: any;
   invoicesdata = {
     notes: '',
@@ -47,7 +48,7 @@ export class InvoicesEditComponent implements OnInit {
        private route: ActivatedRoute,
        private modalService: NgbModal
      ) {
-        console.log(this.router.routerState.snapshot.url+'urll');
+      this.docType = this.router.routerState.snapshot.url.split('/')[1];
           this.itemsService.getItems().subscribe(
             res => { if (res.status === 200 || res.status === 304) {
               let resdata = res.json().rows;
@@ -102,6 +103,7 @@ export class InvoicesEditComponent implements OnInit {
                 sales_person:[''],
                 customer_name:[''],
                 sales_person_name:[''],
+                doc_type:[this.docType],
                 line_items: this._fb.array([
                     this.initLineitems(),
                 ])

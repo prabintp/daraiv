@@ -2,7 +2,7 @@
 
   <div class="row">
     <fieldset class="form-group col-6 col-md-3">
-      <label>Invoice#</label>
+      <label>ID#</label>
         <input [class.is-invalid]="invoiceForm.controls.invoice_number.touched && !invoiceForm.controls.invoice_number.valid" required name="name" formControlName="invoice_number" class="form-control validate ">
         <div class="invalid-feedback">
           Invoice ID is required.
@@ -11,7 +11,7 @@
     </fieldset>
 
     <fieldset class="form-group col-6 col-md-3">
-      <label>Customer</label>
+      <label>{{docType == 'purchaseorders' ? 'Vendor' : 'Customer' }}</label>
       <input  ngui-auto-complete
                   [source]="customerData"
                   formControlName="customer_name"
@@ -35,7 +35,7 @@
 
 
       <fieldset class="form-group col-md-3 col-6">
-        <label>Invoice Date</label>
+        <label>Date</label>
         <div class="input-group datepicker-input">
             <input class="form-control" placeholder="yyyy-mm-dd"
                 name="invdate" formControlName="invoice_date" ngbDatepicker #d1="ngbDatepicker">
@@ -60,7 +60,7 @@
 
     </div>
 
-    <div class="row">
+    <div class="row" *ngIf="docType != 'purchaseorders'">
       <fieldset class="form-group col-6 col-md-4">
         <label>Sales Person</label>
         <input  ngui-auto-complete
@@ -200,8 +200,8 @@
 
 
   <div class="col-md-12">
-    <button type="submit" class="btn btn-primary">Submit Button1</button>
-    <button type="reset" [routerLink]="['/invoices']" class="btn btn-secondary">cancel</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="reset" [routerLink]="['/'+docType]" class="btn btn-brand">cancel</button>
     <!--<button  (click)="openModal()" class="btn btn-primary">Print view</button> -->
   <!-- <div class="row" >{{invoiceForm.value | json}}</div> -->
   </div>
