@@ -39,6 +39,7 @@ export class InvoicesEditComponent implements OnInit {
   public continents = [];
   public taxRates = [];
   public customerData = [];
+  public purchaseOrder = [];
     constructor(private _fb: FormBuilder,
       private invoicesService: InvoicesService,
        private router: Router,
@@ -51,23 +52,31 @@ export class InvoicesEditComponent implements OnInit {
       this.docType = this.router.routerState.snapshot.url.split('/')[1];
           this.itemsService.getItems().subscribe(
             res => { if (res.status === 200 || res.status === 304) {
-              let resdata = res.json().rows;
+              const resdata = res.json().rows;
             //  this.rows = res.json().rows;
               this.continents = [...resdata];
-           }
-          else{
-             this.rows = []
+             } else {
+             this.rows = [];
            }
          }
         );
-
-        this._taxService.getTax().subscribe(
+        this.invoicesService.getInvoices('purchaseorders').subscribe(
           res => { if (res.status === 200 || res.status === 304) {
-            let resdata = res.json().rows;
+            const resdata = res.json().rows;
+            // this.rows = res.json().rows;
+            this.purchaseOrder = [...resdata];
+         } else {
+           this.purchaseOrder = [];
+         }
+       }
+      );
+      this._taxService.getTax().subscribe(
+          res => { if (res.status === 200 || res.status === 304) {
+            const resdata = res.json().rows;
           //  this.rows = res.json().rows;
             this.taxRates = [...resdata];
-         }
-        else{
+            this.invoiceForm.controls['tax'].setValue(this.invoiceForm.value.tax);
+         } else {
            console.log(res.status + 'service error');
          }
        }
@@ -101,9 +110,14 @@ export class InvoicesEditComponent implements OnInit {
                 status:[''],
                 customer:[''],
                 sales_person:[''],
+				purchase_order: [''],
+				purchase_order_name: [''],
                 customer_name:[''],
                 sales_person_name:[''],
                 doc_type:[this.docType],
+				shipping_date: [''],
+				shipping_method: [''],
+				payment_terms: [''],
                 line_items: this._fb.array([
                     this.initLineitems(),
                 ])
@@ -140,7 +154,9 @@ export class InvoicesEditComponent implements OnInit {
                    self.invoiceForm.controls['tax'].setValue(self.invoiceForm.value.tax);
                  });
                });
-               self.invoiceForm.controls['tax'].valueChanges.subscribe((value) => {
+               self.invoiceForm.get('tax').valueChanges.subscribe((value) => {
+				   if(self.taxRates.length < 1)
+					   return false;
                  if(value === '0'){
                    self.invoiceForm.controls['total'].setValue(self.invoiceForm.value.total - self.invoiceForm.value.totalTax);
                    self.invoiceForm.controls['totalTax'].setValue(0);
@@ -171,7 +187,9 @@ export class InvoicesEditComponent implements OnInit {
            quantity: [''],
            item_name: [''],
            rate: [''],
-           item_total: ['']
+           item_total: [''],
+           sku: [''],
+           unit: ['']
        });
    }
 
@@ -225,9 +243,17 @@ export class InvoicesEditComponent implements OnInit {
         delete invdata.sales_person;
       }
 
+      if(invdata.tax === '0'){
+        delete invdata.tax;
+      }
+     
       if(invdata.customer === ''){
         delete invdata.customer;
       }
+      if(invdata.purchase_order === '') {
+        delete invdata.purchase_order;
+      }
+
 
 
       this.invoicesService.editInvoices(invdata, this.currentItemID).subscribe(
@@ -243,10 +269,20 @@ export class InvoicesEditComponent implements OnInit {
       let html = `<span>${data.name}`;
       return html;
     }
+	
+	autocomplePurchaseOrder = (data: any) : any => {
+      let html = `<span>${data.invoice_number}`;
+      return html;
+    }
+
+    myPOFormatter(data: any): string {
+      return `${data.invoice_number}`;
+    }
 
     myValueFormatter(data: any): string {
-      return `${data.name}`;
+      return `${data.sku}`;
     }
+ 
 
     onChangeItem(e, index, quantity){
       if (e === undefined || e.id === undefined || e.id == '')
@@ -257,6 +293,8 @@ export class InvoicesEditComponent implements OnInit {
       currentLineItem.controls['item_name'].setValue(e.name);
       currentLineItem.controls['rate'].setValue(e.unitprice);
       currentLineItem.controls['item_id'].setValue(e.id);
+      currentLineItem.controls['sku'].setValue(e.sku);
+      currentLineItem.controls['unit'].setValue(e.unit);
       currentLineItem.controls['item_total'].setValue(currentLineItem.controls['quantity'].value * e.unitprice);
     }
 
@@ -267,6 +305,10 @@ export class InvoicesEditComponent implements OnInit {
     onChangeSalesPerson(e){
       this.invoiceForm.controls['sales_person'].setValue(e.id);
       this.invoiceForm.controls['sales_person_name'].setValue(e.name);
+    }
+	onChangePurchaseOrder(e){
+      this.invoiceForm.controls['purchase_order'].setValue(e.id);
+      this.invoiceForm.controls['purchase_order_name'].setValue(e.invoice_number);
     }
 
 

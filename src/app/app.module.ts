@@ -9,11 +9,13 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AuthTokenService} from './auth-token/auth-token.service'
+import {AuthTokenService} from './auth-token/auth-token.service';
+import { UniqueInvoiceValidatorDirective} from './layout/invoices/invoices-id-uniqe.directive';
 
 // import { FormsModule }   from '@angular/forms';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+import { ImageUploadModule } from 'angular2-image-upload';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -28,10 +30,12 @@ export function createTranslateLoader(http: HttpClient) {
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
-	      HttpModule,
+        HttpModule,
         NguiAutoCompleteModule,
         BrowserAnimationsModule,
         HttpClientModule,
+       // UniqueInvoiceValidatorDirective,
+        ImageUploadModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -42,7 +46,7 @@ export function createTranslateLoader(http: HttpClient) {
         AppRoutingModule
     ],
     declarations: [AppComponent],
-    providers: [AuthTokenService],
+    providers: [AuthTokenService, UniqueInvoiceValidatorDirective],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

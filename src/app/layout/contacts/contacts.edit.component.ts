@@ -31,6 +31,7 @@ export class ContactsEditComponent implements OnInit {
     mobile:'',
     baddress: '',
     saddress: '',
+	trn: '',
     name:''
   };
     constructor(
@@ -56,6 +57,7 @@ export class ContactsEditComponent implements OnInit {
         phone: ['', [Validators.required]],
         mobile:[''],
         baddress:[''],
+		trn:[''],
         saddress:['']
 
        });

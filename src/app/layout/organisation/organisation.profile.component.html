@@ -1,2 +1,69 @@
-Profile
-{{organisationdata.name}}
+<br>
+<form  [formGroup]="OrganisationForm" (ngSubmit)="onSubmit()" class="">
+    <div class="form-group row">
+        <label for="example-text-input" class="col-2 col-form-label">Name</label>
+        <div class="col-10 col-md-6">
+          <input class="form-control validate" type="text" required name="name" formControlName="name">
+        </div>
+      </div>
+     
+      <div class="form-group row">
+        <label for="example-email-input" class="col-2 col-form-label">Email</label>
+        <div class="col-10 col-md-6">
+         <input class="form-control validate" type="text" required name="email" formControlName="email">
+        </div>
+      </div>
+
+      <!--<image-upload  (uploadFinished)="onLogoUploadFinished($event)"></image-upload>-->
+      <input class="form-control validate" type="hidden" required name="logo" formControlName="logo">
+      
+
+      <div class="form-group row">
+        <label for="example-text-input" class="col-2 col-form-label">TRN Number</label>
+        <div class="col-10 col-md-6">
+          <input class="form-control validate" type="text" required name="trn" formControlName="trn">
+        </div>
+      </div>
+     
+
+      <div class="form-group row">
+        <label for="example-text-input" class="col-2 col-form-label">Address</label>
+        <div class="col-10 col-md-6">
+            <textarea name='address' formControlName="address" class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="example-text-input" class="col-2 col-form-label">Bank Details</label>
+        <div class="col-10 col-md-6">
+            <textarea name='bank' formControlName="bank" class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+    <br>
+
+      <legend>Print Template</legend>
+      <div class="form-group row" formGroupName="print">
+        <label for="example-text-input" class="col-2 col-form-label">Template Footer Text</label>
+        <div class="col-10 col-md-6">
+            <textarea name='footer_text' formControlName="footer_text" class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+    
+      <div class="form-group row" formGroupName="print">
+            <label for="example-text-input" class="col-2 col-form-label">Template Terms/condition</label>
+            <div class="col-10 col-md-6">
+                <textarea name='terms_condition' formControlName="terms_condition" class="form-control" rows="3"></textarea>
+            </div>
+          </div>
+
+      <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label"></label>
+        <div class="col-6">
+        <button type="submit" class="btn btn-outline-primary btn-sm">  Save  </button>
+        </div>
+      </div>
+      
+     
+
+
+</form>

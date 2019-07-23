@@ -15,22 +15,29 @@
     </fieldset>
   </div>
   <div class="col-md-6">
-    <fieldset class="form-group">
+   
+	 <div class="row">
+      <fieldset class="form-group col-6">
         <label>Name</label>
         <input [class.is-invalid]="contactsForm.controls.name.touched && !contactsForm.controls.name.valid" required name="name" formControlName="name" class="form-control validate ">
         <div class="invalid-feedback">
           Item Name is required.
         </div>
     </fieldset>
-
-    <div class="row">
-      <fieldset class="form-group col-6">
+       <fieldset class="form-group col-6">
           <label>Company Name</label>
           <input [class.is-invalid]="contactsForm.controls.company.touched && !contactsForm.controls.company.valid" required name="company" formControlName="company" class="form-control validate ">
           <div class="invalid-feedback">
             Item company is required.
           </div>
       </fieldset>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-6">
+          <label>TRN Number</label>
+          <input name="trn" formControlName="trn" class="form-control validate ">
+      </div>
       <div class="form-group col-6">
           <label>Contact email</label>
           <input name="email" formControlName="email" class="form-control validate ">
@@ -44,7 +51,7 @@
       </div>
 
       <div class="form-group col-4">
-          <label> </label>
+          <label>Mobile </label>
           <input   name="mobile" formControlName="mobile" class="form-control validate " placeholder="Mobile">
       </div>
     </div>
@@ -61,8 +68,8 @@
     </fieldset>
   </div>
   <div class="col-md-12">
-    <button type="submit" class="btn btn-secondary" [disabled]="!(contactsForm.valid)">Submit Button</button>
-    <button type="reset" class="btn btn-secondary">Reset Button</button>
+    <button type="submit" class="btn btn-primary" [disabled]="!(contactsForm.valid)">Save</button>
+    <button class="btn btn-outline-primary">Cancel</button>
   <!--  <div class="row" >{{contactsForm.value | json}}</div> -->
   </div>
 </form>

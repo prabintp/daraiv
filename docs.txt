@@ -1,0 +1,36 @@
+customer - 
+ - TRN #
+ -
+
+Invoice -
+ - Purchase order (PO) No - 
+ - payment Terms
+ - Shipping Method
+ - Shipping date
+
+Items -
+ - UOM
+
+Quotation -
+ - validity
+ - cus id
+ - payment terms
+ - TRN # organisation
+ - items 
+ - sub total
+ - vat 
+ - total
+
+Organisation - 
+ bank details - 
+  - bank name
+  - branch name
+  - address
+  - Account No
+  - IBAN No
+  - Swift Code
+ -UAE TRN
+ -logo
+ - print footer.
+
+- Expense

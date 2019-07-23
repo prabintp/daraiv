@@ -43,7 +43,7 @@
            </ng-template>
 
             <ng-template #editTmpl let-row="row" let-value="value">
-             <a [routerLink]="['./edit', value]" class="btn btn-success"><i class="fa fa-edit"></i></a>
+             <a [routerLink]="['./edit', value]" class=""><i class="fa fa-edit"></i></a>
              <!-- <a (click)="onDelete(value)" class="btn btn-success"><i class="fa fa-trash"></i></a> -->
              <app-modal (onSuccess)="onDelete(value)" [title]="Confirm" [bodyContent]="'Confirm your Item delete action.'"></app-modal>
            </ng-template>

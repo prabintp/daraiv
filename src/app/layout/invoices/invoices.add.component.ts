@@ -7,6 +7,7 @@ import { ItemsService } from '../items/items.service';
 import { TaxService } from '../tax/tax.service';
 import { ContactsService } from '../contacts/contacts.service';
 import { FormGroup, FormControl, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { UniqueInvoiceIdValidator} from './invoices-id-uniqe.directive';
 import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { Invoice } from './invoices.interface';
 import {Subject} from 'rxjs/Subject';
@@ -16,7 +17,7 @@ import 'rxjs/add/operator/map';
 @Component({
     selector: 'app-invoices',
     templateUrl: './invoices.add.component.html',
-    styleUrls: ['./invoices.component.scss'],
+    styleUrls: ['./invoices.component.scss'], 
     animations: [routerTransition()]
 })
 export class InvoicesAddComponent implements OnInit {
@@ -34,11 +35,13 @@ export class InvoicesAddComponent implements OnInit {
   public continents = [];
   public taxRates = [];
   public customerData = [];
+  public purchaseOrder = [];
     constructor(private _fb: FormBuilder,
       private invoicesService: InvoicesService,
       private itemsService: ItemsService,
       private _taxService: TaxService,
       private _contactsService: ContactsService,
+      private _uniqueInvoiceIdValidator: UniqueInvoiceIdValidator,
       private router: Router) {
 
       this.docType = this.router.routerState.snapshot.url.split('/')[1];
@@ -53,6 +56,18 @@ export class InvoicesAddComponent implements OnInit {
        }
      }
     );
+	
+	 this.invoicesService.getInvoices('purchaseorders').subscribe(
+          res => { if (res.status === 200 || res.status === 304) {
+            let resdata = res.json().rows;
+            // this.rows = res.json().rows;
+            this.purchaseOrder = [...resdata];
+         }
+        else{
+           this.purchaseOrder = []
+         }
+       }
+      );
 
     this._taxService.getTax().subscribe(
       res => { if (res.status === 200 || res.status === 304) {
@@ -79,8 +94,11 @@ export class InvoicesAddComponent implements OnInit {
 );
 
   this.invoiceForm = this._fb.group({
-           name: ['', [Validators.required, Validators.minLength(5)]],
-           invoice_number: ['', [Validators.required, Validators.minLength(4)]],
+           name: [''],
+           invoice_number: ['', { Validators: [Validators.minLength(5)],
+            asyncValidators: [this._uniqueInvoiceIdValidator.validate.bind(this._uniqueInvoiceIdValidator)],
+            updateOn: 'blur'
+          } ],
            invoice_date:[''],
            invoice_due:[''],
            subtotal:['00'],
@@ -93,9 +111,14 @@ export class InvoicesAddComponent implements OnInit {
            tax_type:['0'],
            customer:[''],
            sales_person:[''],
+		       purchase_order: [''],
+		       purchase_order_name: [''],
            customer_name:[''],
            sales_person_name:[''],
            doc_type:[this.docType],
+		   shipping_date: [''],
+		   shipping_method: [''],
+		   payment_terms: [''],
            line_items: this._fb.array([
                this.initLineitems(),
            ])
@@ -153,12 +176,14 @@ export class InvoicesAddComponent implements OnInit {
            quantity: [''],
            item_name: [''],
            rate: [''],
-           item_total: ['']
+           item_total: [''],
+           sku: [''],
+           unit: ['']
        });
    }
 
    myValueFormatter(data: any): string {
-     return `${data.name}`;
+     return `${data.sku}`;
    }
 
    updateItemTotal(item){
@@ -166,6 +191,14 @@ export class InvoicesAddComponent implements OnInit {
    }
 
     onSubmit(){
+
+      if (this.invoiceForm.invalid) {
+        this.invoiceForm.get('invoice_number').markAsTouched();
+        this.invoiceForm.get('name').markAsTouched();
+        return;
+      }
+
+
       var invdata = this.invoiceForm.value;
       if(invdata.sales_person === ''){
         delete invdata.sales_person;
@@ -173,6 +206,9 @@ export class InvoicesAddComponent implements OnInit {
 
       if(invdata.customer === ''){
         delete invdata.customer;
+      }
+      if (invdata.purchase_order === '') {
+        delete invdata.purchase_order;
       }
 
       this.invoicesService.addInvoices(invdata).subscribe(
@@ -189,6 +225,14 @@ export class InvoicesAddComponent implements OnInit {
       let html = `<span>${data.name}`;
       return html;
     }
+	autocomplePurchaseOrder = (data: any) : any => {
+      let html = `<span>${data.invoice_number}`;
+      return html;
+    }
+
+    myPOFormatter(data: any): string {
+      return `${data.invoice_number}`;
+    }
 
     onChangeItem(e, index, quantity){
       const lineitems = <FormArray>this.invoiceForm.controls['line_items'];
@@ -197,6 +241,8 @@ export class InvoicesAddComponent implements OnInit {
       currentLineItem.controls['item_name'].setValue(e.name);
       currentLineItem.controls['rate'].setValue(e.unitprice);
       currentLineItem.controls['item_id'].setValue(e.id);
+      currentLineItem.controls['sku'].setValue(e.sku);
+      currentLineItem.controls['unit'].setValue(e.unit);
       currentLineItem.controls['item_total'].setValue(currentLineItem.controls['quantity'].value * e.unitprice);
     }
 
@@ -207,6 +253,10 @@ export class InvoicesAddComponent implements OnInit {
     onChangeSalesPerson(e){
       this.invoiceForm.controls['sales_person'].setValue(e.id);
       this.invoiceForm.controls['sales_person_name'].setValue(e.name);
+    }
+	onChangePurchaseOrder(e){
+      this.invoiceForm.controls['purchase_order'].setValue(e.id);
+      this.invoiceForm.controls['purchase_order_name'].setValue(e.invoice_number);
     }
     addItemRow(){
       event.preventDefault();

@@ -19,6 +19,7 @@ export class ItemsAddComponent implements OnInit {
   public itemsForm: FormGroup;
   private rows: any = [];
   public listCategory = [];
+  public umoOption: any;
   itemsdata = {
     notes: '',
     desc: '',
@@ -26,6 +27,8 @@ export class ItemsAddComponent implements OnInit {
     access_token: '',
     shop: '',
     createdBy: '',
+    unit:'',
+    category:''
   };
     constructor(
       private _fb: FormBuilder,
@@ -36,6 +39,7 @@ export class ItemsAddComponent implements OnInit {
     ngOnInit() {
       this.loadCategory();
       this.initForm();
+      this.umoOption = this.itemsService.getUnits();
     }
 
     loadCategory(){
@@ -72,12 +76,13 @@ export class ItemsAddComponent implements OnInit {
          actualprice: ['', [Validators.required]],
          desc:[''],
          notes:[''],
-         category:['']
+         category:[''],
+         unit:['']
 
        });
     }
 
-    onAdd(){
+    onSubmit(){
       this.itemsService.addItems(this.itemsForm.value).subscribe(
         res => res.status === 200 || res.status === 201 ? this.router.navigate(['/items']) : this.router.navigate(['/404'])
      );

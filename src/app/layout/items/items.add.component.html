@@ -1,17 +1,29 @@
-<form [formGroup]="itemsForm" (ngSubmit)="onAdd()" class="row">
+<form [formGroup]="itemsForm" (ngSubmit)="onSubmit()" class="row">
   <div class="col-md-6">
-    <fieldset class="form-group">
+    <div class="row">
+    <fieldset class="form-group col-xl-6">
         <label>Name</label>
         <input [class.is-invalid]="itemsForm.controls.name.touched && !itemsForm.controls.name.valid" required name="name" formControlName="name" class="form-control validate ">
         <div class="invalid-feedback">
           Item Name is required.
         </div>
     </fieldset>
+    <fieldset class="form-group col-xl-6">
+      <label>Item code</label>
+      <input [class.is-invalid]="itemsForm.controls.sku.touched && !itemsForm.controls.sku.valid" required name="sku" formControlName="sku" class="form-control validate ">
+      <div class="invalid-feedback">
+        Item SKU is required.
+      </div>
+    </fieldset>
+  </div>
 
     <div class="row">
       <fieldset class="form-group col-xl-6">
-          <label>Item code</label>
-          <input [class.is-invalid]="itemsForm.controls.sku.touched && !itemsForm.controls.sku.valid" required name="sku" formControlName="sku" class="form-control validate ">
+          <label>UOM</label>
+          <select  name="unit" formControlName="unit" class="form-control validate ">
+              <option>select</option>
+              <option *ngFor="let item of umoOption">{{item.name}}</option>
+            </select>
           <div class="invalid-feedback">
             Item SKU is required.
           </div>
@@ -21,9 +33,13 @@
       <input  ngui-auto-complete
                   [source]="listCategory"
                   name="name"
+                  [ngModel]="itemsdata.category"
+                  [ngModelOptions]="{standalone: true}"
+                  [re-focus-after-select]=false
+                  [select-on-blur]=true
+                  [accept-user-input]=false
                   value-property-name="name"
                   display-property-name="name"
-                  [accept-user-input]=false
                   (valueChanged)="setValueCategory($event)"
                   [list-formatter]="autocompleItems"
                   placeholder="Select items"

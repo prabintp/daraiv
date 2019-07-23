@@ -36,7 +36,7 @@
             <ng-template #editTmpl let-row="row" let-value="value">
              <a [routerLink]="['./edit', value]" title="Edit" class=""><i class="fa fa-edit"></i></a>
              <app-modal (onSuccess)="onDelete(value)" [title]="Confirm" [bodyContent]="'Confirm your Item delete action.'"></app-modal>
-             <a (click)="openPrintView(value)" title="View Details" class=""><i class="fa fa-eye"></i></a>
+             <a  href="javascript.void(0)" (click)="openPrintView(value)" title="View Details" class=""><i class="fa fa-eye"></i></a>
            </ng-template>
 
           </div>

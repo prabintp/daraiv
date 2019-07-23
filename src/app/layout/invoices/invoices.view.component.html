@@ -1,125 +1,280 @@
+
+		
 <div class="container">
-  <div class="row mt-2">
-    <div class="col-12">
-    <button (click)="printv()" class="btn btn-outline-primary pull-right"><i class="fa fa-print"></i> Print
-    </button>
+	<div class="row mt-2">
+	  <div class="col-12">
+	  <button (click)="printv()" class="btn btn-outline-primary pull-right"><i class="fa fa-print"></i> Print
+	  </button>
+	</div>
+	</div>
   </div>
+  <div class="container inv-print" id="inv-print">
+  
+	  <div class="row">
+			  <div class="col-12 text-center">
+					  <h2 *ngIf="docTypeView != 'invoice'">TAX INVOICE</h2>
+			  </div>
+	  </div>
+	  
+	  <div class="row">
+		  <div class="col-12">
+	  <div class="table-responsive">
+	  <table class="table">
+		  <tr>
+			  
+			  <td class="col-4" style="width:33.3333%">
+					  <div align="left">
+							  <div class="invoice-title">
+								  <h2>{{invoiceData?.shop.name}}</h2>
+								  <address>
+										  <strong>Billed To:</strong><br>
+										  <div [innerHTML]="invoiceData?.customer.baddress"></div>
+				  
+										  </address>
+							  </div>
+							  </div>
+			  </td>
+			  <td class="col-4"  align="center" style="width:33.3333%">
+				  
+							  <img src="http://www.daralfalah.co.ae/images/logo_home.png" width="125px" height="125px" />
+					  
+			  </td>
+			  <td class="col-4" style="width:33.3333%">
+					<div  align="right">
+							  <br>
+							  <div style="padding-bottom: 10px">
+									  <strong>UAE TRN:</strong>
+									  <span>{{invoiceData?.shop.trn}}</span>
+  
+							  </div>
+							  <div style="padding-bottom: 10px">
+									  <strong>Invoice Number:</strong>
+									  <span>{{invoiceData?.invoice_number}}</span>
+  
+							  </div>
+						  
+							  <div>
+									  <strong>Invoice date:</strong>
+									  <span>	{{invoiceData?.invoiceDate | date:'MM/dd/yyyy'}}</span>
+  
+							  </div>
+									  
+								  
+										  
+						  
+						  
+				  </div>
+			  </td>
+		  </tr>
+	  
+	  </table>
   </div>
-</div>
-<div class="container inv-print" id="inv-print">
-  <div class="row">
-    <div class="col-6">
-      <div class="invoice-title">
-        <h2>{{invoiceData?.shop.name}}</h2>
-      </div>
-    </div>
-    <div class="col-6" align="right">
-          <h2>{{docTypeView}}</h2>
-          <h3 align="right" class="pull-right text-right"> # {{invoiceData?.invoice_number}}</h3>
-    </div>
-
+  </div></div>
+	  <div class="row">
+		  <div class="col-12">
+					  
+		  <!--				
+			  <div class="row">
+				  <div class="col-6">
+					  <address>
+					  <strong>Billed To:</strong><br>
+			  <div [innerHTML]="invoiceData?.customer.baddress"></div>
+  
+					  </address>
+				  </div>
+				  <div class="col-6 text-right" align="right">
+					  <address>
+					  <strong>Shipped To:</strong><br>
+				<div [innerHTML]="invoiceData?.customer.saddress"></div>
+					  </address>
+				  </div>
+			  </div>
+			  <div class="row">
+				  <div class="col-6">
+					  <address>
+				<strong>Payment Details:</strong><br>
+  
+					  </address>
+				  </div>
+				  <div class="col-6 text-right" align="right">
+					  <address>
+						  <strong>Order Date:</strong><br>
+						  {{invoiceData?.invoiceDate | date:'MM/dd/yyyy'}}<br><br>
+					  </address>
+				  </div>
+				  </div>
+			  -->
+  
+			  <div class="table-responsive detail-table">
+					  <table class="table table-bordered" style="margin-bottom: 0px">
+						  <thead>
+														  <tr class="info">
+									  <td><strong>Customer ID</strong></td>
+									  <td class="text-center"><strong>customer PO</strong></td>
+									  <td class="text-center"><strong>Payment Terms</strong></td>
+														  </tr>
+						  </thead>
+						  <tbody>
+							  <tr>
+								  <td>{{invoiceData?.customer.company}}</td>
+								  <td class="text-center">{{invoiceData?.purchase_order_name}}</td>
+								  <td class="text-center">{{invoiceData?.payment_terms}}</td>
+								  
+							  </tr>
+						  </tbody>
+					  </table>
+  
+					  <table class="table mb-0 table-bordered">
+							  <thead>
+															  <tr class="info">
+										  <td><strong>Customer TRN</strong></td>
+										  <td class="text-center"><strong>Shipping Method</strong></td>
+										  <td class="text-center"><strong>Ship Date</strong></td>
+										  <td class="text-center"><strong>Due Date</strong></td>
+															  </tr>
+							  </thead>
+							  <tbody>
+								  <tr>
+									  <td>{{invoiceData?.customer.trn}}</td>
+									  <td class="text-center">{{invoiceData?.shipping_method}}</td>
+									  <td class="text-center">{{invoiceData?.shipping_date | date:'MM/dd/yyyy'}}</td>
+									  <td class="text-center">{{invoiceData?.invoice_due | date:'MM/dd/yyyy'}}</td>
+									  
+								  </tr>
+							  </tbody>
+						  </table>
+				  </div>
+  
+  
+		  </div>
+	  </div>
+	  <div class="row">
+		  <div class="col-12">
+			  <div class="panel panel-default">
+				  <div class="panel-heading">
+					  <h3 class="panel-title"><strong>Order summary</strong></h3>
+				  </div>
+			  <div class="panel-body">
+					  <div class="table-responsive">
+						  <table class="table table-striped">
+							  <thead>
+								  <tr class="info">
+									  <td><strong>SKU</strong></td>
+									  <td><strong>Item</strong></td>
+									  <td><strong>UOM</strong></td>
+									  <td class="text-center"><strong>Price</strong></td>
+									  <td class="text-center"><strong>Quantity</strong></td>
+									  <td class="text-right"><strong>Totals</strong></td>
+								  </tr>
+							  </thead>
+							  <tbody>
+								  <!-- foreach ($order->lineItems as $line) or some such thing here -->
+								  <tr *ngFor="let row of invoiceData?.line_items;  let i = index">
+									  <td>{{row.sku}}</td>
+									  <td>{{row.item_name}}</td>
+									  <td>{{row.unit}}</td>
+									  <td class="text-center">{{row.rate}}</td>
+									  <td class="text-center">{{row.quantity}}</td>
+									  <td class="text-right">{{row.rate * row.quantity}}</td>
+								  </tr>
+  
+							  </tbody>
+						  </table>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+		  <br>
+		  
+		  
+	  <div class="row">
+		  <div class="col-12">
+	  <div class="table-responsive">
+	  <table class="table">
+		  <tr>
+			  <td class="col-4"  align="left" style="width:50%">
+					  <address>
+							  <strong>Bank Details:</strong><br>
+							  <div [innerHTML]="invoiceData?.shop.bank"></div>
+					  </address>
+			  </td>
+			  <td class="col-4" style="width:50%" align="right">
+				  <table class="table">
+					  <tbody>
+					  <tr>
+							  <td class="no-line"></td>
+							  <td class="no-line"></td>
+							  <td class="thick-line info text-left"><strong>Subtotal</strong></td>
+							  <td class="thick-line text-right">{{invoiceData?.subtotal}}</td>
+						  </tr>
+						  <tr>
+							  <td class="no-line"></td>
+							  <td class="no-line"></td>
+							  <td class=" text-left info"><strong>{{invoiceData?.tax.name}}</strong></td>
+							  <td class=" text-right">{{invoiceData?.total_tax}}</td>
+						  </tr>
+						  <tr>
+							  <td class="no-line"></td>
+							  <td class="no-line"></td>
+							  <td class=" text-left info"><strong>Total</strong></td>
+							  <td class=" text-right">{{invoiceData?.total}}</td>
+						  </tr>
+					  </tbody>
+					  </table>
+			  </td>
+		  </tr>
+	  
+	  </table>
   </div>
-    <div class="row">
-        <div class="col-12">
-          	<hr>
-    		<div class="row">
-    			<div class="col-6">
-    				<address>
-    				<strong>Billed To:</strong><br>
-            <div [innerHTML]="invoiceData?.customer.baddress"></div>
-
-    				</address>
-    			</div>
-    			<div class="col-6 text-right" align="right">
-    				<address>
-        			<strong>Shipped To:</strong><br>
-              <div [innerHTML]="invoiceData?.customer.saddress"></div>
-    				</address>
-    			</div>
-    		</div>
-    		<div class="row">
-    			<div class="col-6">
-    				<address>
-              <strong>Payment Details:</strong><br>
-
-    				</address>
-    			</div>
-    			<div class="col-6 text-right" align="right">
-    				<address>
-    					<strong>Order Date:</strong><br>
-    					{{invoiceData?.invoiceDate | date:'MM/dd/yyyy'}}<br><br>
-    				</address>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-
-    <div class="row">
-    	<div class="col-12">
-    		<div class="panel panel-default">
-    			<div class="panel-heading">
-    				<h3 class="panel-title"><strong>Order summary</strong></h3>
-    			</div>
-    		<div class="panel-body">
-    				<div class="table-responsive">
-    					<table class="table">
-    						<thead>
-                                <tr>
-        							<td><strong>Item</strong></td>
-        							<td class="text-center"><strong>Price</strong></td>
-        							<td class="text-center"><strong>Quantity</strong></td>
-        							<td class="text-right"><strong>Totals</strong></td>
-                                </tr>
-    						</thead>
-    						<tbody>
-    							<!-- foreach ($order->lineItems as $line) or some such thing here -->
-    							<tr *ngFor="let row of invoiceData?.line_items;  let i = index">
-    								<td>{{row.item_name}}</td>
-    								<td class="text-center">{{row.rate}}</td>
-    								<td class="text-center">{{row.quantity}}</td>
-    								<td class="text-right">{{row.rate * row.quantity}}</td>
-    							</tr>
-
-    							<tr>
-    								<td class="thick-line"></td>
-    								<td class="thick-line"></td>
-    								<td class="thick-line text-center"><strong>Subtotal</strong></td>
-    								<td class="thick-line text-right">{{invoiceData?.subtotal}}</td>
-    							</tr>
-    							<tr>
-    								<td class="no-line"></td>
-    								<td class="no-line"></td>
-    								<td class="no-line text-center"><strong>Tax Amount</strong></td>
-    								<td class="no-line text-right">{{invoiceData?.total_tax}}</td>
-    							</tr>
-    							<tr>
-    								<td class="no-line"></td>
-    								<td class="no-line"></td>
-    								<td class="no-line text-center"><strong>Total</strong></td>
-    								<td class="no-line text-right">{{invoiceData?.total}}</td>
-    							</tr>
-    						</tbody>
-    					</table>
-    				</div>
-    			</div>
-    		</div>
-    	</div>
-    </div>
-    <br>
-    <div class="row">
-      <div class=" col-12">
-        Authorised Signature ________________________
-      </div>
-      <div class="col-12" >
-            <hr>
-      </div>
-
-    </div>
+  </div></div>
+  
+  <div class="row  mb-2 sign">
+		  <div class=" col-6 text-left">
+				  <div style="padding-bottom: 10px">
+						  <strong>Recever's Name:</strong>
+  
+				  </div>
+				  <div style="padding-bottom: 10px">
+						  <strong>Signature & Stamp:</strong>
+  
+				  </div>
+			  
+		  </div>
+	  
+	  </div>
+  
+	  <div class="row text-center">
+		<div class=" col-12">
+				  <br>
+				  <br>
+				  <br>
+		</div>
+	  </div>
+	  
+  
+	  <div class="row text-center pb-3 ">
+		<div class=" col-12">
+		  {{invoiceData?.shop.print.terms_condition}}
+		</div>
+	  </div>
+  
+  
+	  <div class="row text-center footer">
+		  <div class="col-12" >
+			  <hr class="" style="margin:4px 0px">
+		</div>
+		<div class="col-12" >
+		  {{invoiceData?.shop.print.footer_text}} 
+		</div>
+	  </div>
+		  
+		  <br>
+		  <br>
+  </div>
+  
 
 
-    <div class="row">
-      <div class="col-12" align="center">
-        <p>{{invoiceData?.shop.address}} </p>
-      </div>
-    </div>
-</div>
+
+	<!-- main body end -->
+

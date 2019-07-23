@@ -3,10 +3,19 @@
   <div class="row">
     <fieldset class="form-group col-6 col-md-3">
       <label>ID#</label>
-        <input [class.is-invalid]="invoiceForm.controls.invoice_number.touched && !invoiceForm.controls.invoice_number.valid" required name="name" formControlName="invoice_number" class="form-control validate ">
-        <div class="invalid-feedback">
-          Invoice ID is required.
-        </div>
+        <input [class.is-invalid]="invoiceForm.controls.invoice_number.touched && invoiceForm.controls.invoice_number.invalid" required name="name" 
+        formControlName="invoice_number" id="invoice_number"
+        class="form-control validate ">
+       
+       <!-- <div *ngIf="invoiceForm.controls.invoice_number.pending">Validating...</div> -->
+          <div *ngIf="invoiceForm.controls.invoice_number.invalid" class="invalid-feedback">
+            <div *ngIf="invoiceForm.controls.invoice_number.errors?.uniqueIDAlert">
+              ID is already taken.
+            </div>
+            <div *ngIf="invoiceForm.controls.invoice_number.errors.required" class="">
+              ID is required.
+            </div>
+            </div>
 
     </fieldset>
 
@@ -61,7 +70,7 @@
     </div>
 
     <div class="row" *ngIf="docType != 'purchaseorders'">
-      <fieldset class="form-group col-6 col-md-4">
+      <fieldset class="form-group col-6 col-md-3">
         <label>Sales Person</label>
         <input  ngui-auto-complete
                     [source]="customerData"
@@ -76,31 +85,80 @@
                     [open-on-focus]="false"
                     placeholder="Select items"
                     class="form-control">
-
+		<input type="hidden" name='sales_person' formControlName="sales_person"  class="form-control">
       </fieldset>
-      <input type="hidden" name='sales_person' formControlName="sales_person"  class="form-control">
+      
+	  <fieldset class="form-group col-6 col-md-3">
+        <label>Purchase Order</label>
+        <input  ngui-auto-complete
+                    [source]="purchaseOrder"
+                    formControlName="purchase_order_name"
+                    value-property-name="invoice_number"
+                    display-property-name="invoice_number"
+                   (valueChanged)="onChangePurchaseOrder($event)"
+                    [value-formatter]="myPOFormatter"
+                    [list-formatter]="autocomplePurchaseOrder"
+                    [select-on-blur]="true"
+                    [re-focus-after-select]="false"
+                    [open-on-focus]="false"
+                    placeholder="Select items"
+                    class="form-control">
+		<input type="hidden" name='purchase_order' formControlName="purchase_order"  class="form-control">
+      </fieldset>
+	  
+	   <fieldset class="form-group col-6 col-md-3">
+      <label>shipping Method</label>
+        <input name="shipping_method" formControlName="shipping_method" class="form-control">
+    </fieldset>
+	  
+	  <fieldset class="form-group col-md-3 col-6">
+        <label>Shipping Date</label>
+        <div class="input-group datepicker-input">
+            <input class="form-control" placeholder="yyyy-mm-dd"
+                name="shipping_date" formControlName="shipping_date" ngbDatepicker #d3="ngbDatepicker">
+            <button class="input-group-addon" (click)="d3.toggle()" type="button">
+                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                <span class="fa fa-calendar"></span>
+            </button>
+        </div>
+        <!--  <input required name='sku' [(ngModel)]="invoicesdata.sku" class="form-control" placeholder="****"> -->
+      </fieldset>
+      
     </div>
+	
+	<div class="row">
+	  <fieldset class="form-group col-6 col-md-3">
+      <label>Payment Terms</label>
+        <input name="payment_terms" formControlName="payment_terms" class="form-control">
+    </fieldset>
+	</div>
 
   <!--  <lineitems [group]="line_items"></lineitems> -->
 
     <div class="row">
-      <fieldset class="form-group col-md-3 col-4">
-        <label>Item Detais</label>
+      <fieldset class="form-group col-md-2 col-2">
+        <label>Item Code</label>
       </fieldset>
-      <div class="form-group col-md-3 col-3">
+      <fieldset class="form-group  col-3">
+          <label>Item Desc</label>
+        </fieldset>
+        <fieldset class="form-group col-1">
+            <label>U.O.M</label>
+          </fieldset>
+      <div class="form-group  col-1">
         <label>Quantity</label>
       </div>
-      <fieldset class="form-group col-md-3 col-2">
+      <fieldset class="form-group col-2">
         <label>Rate</label>
       </fieldset>
-      <fieldset class="form-group col-md-3 col-3">
+      <fieldset class="form-group col-3">
         <label>amount</label>
       </fieldset>
     </div>
 <div formArrayName="line_items">
     <div  *ngFor="let row of lineItems.controls;  let i = index">
     <div  class="row" [formGroupName]="i">
-    <fieldset class="form-group col-md-3 col-4">
+    <fieldset class="form-group col-md-2 col-3">
       <!-- <md-input ngui-auto-complete
         style="width:100%"
         id="model6"
@@ -114,11 +172,11 @@
         <!--   -->
       <input  ngui-auto-complete
                   [source]="continents"
-                  formControlName="item_name"
-                  name="item_id"
+                  formControlName="sku"
+                  name="sku"
                   value-property-name="sku"
-                  value-property-name="item_id"
-                  display-property-name="name"
+                  value-property-name="sku"
+                  display-property-name="sku"
                   (valueChanged)="onChangeItem($event,i,1)"
                   [value-formatter]="myValueFormatter"
                   [list-formatter]="autocompleItems"
@@ -127,17 +185,23 @@
                   [open-on-focus]="false"
                   placeholder="Select items"
                   class="form-control">
-    <input type="hidden" name='item_name' formControlName="item_name"  class="form-control">
+    <!--<input type="hidden" name='item_name' formControlName="item_name"  class="form-control"> -->
     <input type="hidden" name='item_id' formControlName="item_id"  class="form-control">
     <!--<input type="hidden" name='tax_rate' formControlName="tax_rate"  class="form-control">
     <input type="hidden" name='tax_type' formControlName="tax_type"  class="form-control"> -->
       <!--  <input required name='sku' [(ngModel)]="row.line_items" class="form-control" placeholder="****">-->
     </fieldset>
-    <div class="form-group col-md-3 col-3">
+    <div class="form-group col-3">
+        <input type="text" name='item_name' formControlName="item_name"  class="form-control">
+      </div>
+      <div class="form-group col-1">
+          <input type="text" name='unit' formControlName="unit"  class="form-control">
+        </div>
+    <div class="form-group col-md-1 col-1">
       <input type="text" name='quantity' formControlName="quantity"  class="form-control">
     </div>
-    <fieldset class="form-group col-md-3 col-2">
-        <input readonly required name='rate' formControlName="rate"  class="form-control-plaintext" placeholder="">
+    <fieldset class="form-group col-md-2 col-2">
+        <input required name='rate' formControlName="rate"  class="form-control" placeholder="">
     </fieldset>
     <div class="form-group col-2">
       <input required name='item_total{{i}}' [(ngModel)]="item_total[i]" class="form-control-plaintext" readonly [ngModelOptions]="{standalone: true}" >
@@ -203,6 +267,6 @@
     <button type="submit" class="btn btn-primary">Save</button>
     <button type="reset" [routerLink]="['/'+docType]" class="btn btn-brand">cancel</button>
     <!--<button  (click)="openModal()" class="btn btn-primary">Print view</button> -->
-  <!-- <div class="row" >{{invoiceForm.value | json}}</div> -->
-  </div>
+    <div class="row" >{{invoiceForm.value | json}}</div> 
+  </div> 
 </form>

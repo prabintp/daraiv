@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 @Component({
     selector: 'app-items',
-    templateUrl: './items.edit.component.html',
+    templateUrl: './items.add.component.html',
   //  styleUrls: ['./items.component.scss'],
     animations: [routerTransition()]
 })
@@ -19,6 +19,7 @@ export class ItemsEditComponent implements OnInit {
   public itemsForm: FormGroup;
   private rows: any = [];
   public listCategory = [];
+  public umoOption: any;
   currentItemID: any;
   itemsdata = {
     notes: '',
@@ -31,7 +32,8 @@ export class ItemsEditComponent implements OnInit {
     quantity:'',
     unitprice: '',
     category:{id:'', name:''},
-    actualprice: ''
+    actualprice: '',
+    unit: ''
   };
     constructor(
       private _fb: FormBuilder,
@@ -45,6 +47,7 @@ export class ItemsEditComponent implements OnInit {
       this.initForm();
       this.currentItemID = this.route.snapshot.params['id'];
       this.getItems(this.currentItemID);
+      this.umoOption = this.itemsService.getUnits();
     }
 
     loadCategory(){
@@ -73,7 +76,8 @@ export class ItemsEditComponent implements OnInit {
          notes:[''],
          shop:[''],
          createdBy:[''],
-         category: ['']
+         category: [''],
+         unit:['']
 
        });
     }
@@ -89,7 +93,8 @@ export class ItemsEditComponent implements OnInit {
         notes: this.itemsdata.notes || '',
         shop: this.itemsdata.shop,
         category: this.itemsdata.category ? this.itemsdata.category.id : '',
-        createdBy: this.itemsdata.createdBy || ''
+        createdBy: this.itemsdata.createdBy || '',
+        unit: this.itemsdata.unit || '',
       });
     }
 
@@ -116,7 +121,7 @@ export class ItemsEditComponent implements OnInit {
      this.itemsForm.get('category').setValue(e.id);
    }
 
-    onEdit(){
+   onSubmit(){
       this.itemsService.editItems(this.itemsForm.value, this.currentItemID).subscribe(
         res => res.status === 200 || res.status === 201 ? this.router.navigate(['/items']) : this.router.navigate(['/404'])
      );

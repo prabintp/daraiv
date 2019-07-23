@@ -5,6 +5,7 @@ import { InvoicesAddComponent } from './invoices.add.component';
 import { InvoicesListComponent } from './invoices.list.component';
 import { InvoicesEditComponent } from './invoices.edit.component';
 
+
 const routes: Routes = [
     {
         path: '', component: InvoicesComponent,

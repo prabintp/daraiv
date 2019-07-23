@@ -25,6 +25,7 @@ export class ContactsAddComponent implements OnInit {
     access_token: '',
     shop: '',
     createdBy: '',
+	trn:'',
   };
     constructor(
       private _fb: FormBuilder,
@@ -51,6 +52,7 @@ export class ContactsAddComponent implements OnInit {
          email: ['', [Validators.required]],
          company: ['', [Validators.required]],
          phone: ['', [Validators.required]],
+		 trn: [''],
          mobile:[''],
          baddress:[''],
          saddress:['']

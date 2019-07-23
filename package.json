@@ -1,5 +1,5 @@
 {
-  "name": "SB-Admin-BS4-Angular-5",
+  "name": "InProgress",
   "version": "4.0.0",
   "license": "MIT",
   "scripts": {
@@ -28,8 +28,10 @@
     "@ngx-translate/core": "^8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
     "@swimlane/ngx-datatable": "^11.1.7",
+    "angular2-image-upload": "^1.0.0-rc.1",
     "chart.js": "^2.7.1",
     "core-js": "^2.5.1",
+    "file-system": "^2.2.2",
     "font-awesome": "^4.7.0",
     "ng2-charts": "^1.6.0",
     "print-js": "^1.0.45",

@@ -9,7 +9,8 @@ import { LayoutComponent } from './layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
-import { ModalComponent} from './bs-component/components';
+import { UniqueInvoiceValidatorDirective} from './invoices/invoices-id-uniqe.directive';
+// import { ModalComponent} from './bs-component/components';
 
 
 
@@ -22,6 +23,7 @@ import { ModalComponent} from './bs-component/components';
         NgbDropdownModule.forRoot()
     ],
     declarations: [LayoutComponent, SidebarComponent,
-      HeaderComponent]
+      HeaderComponent,
+      UniqueInvoiceValidatorDirective]
 })
 export class LayoutModule {}

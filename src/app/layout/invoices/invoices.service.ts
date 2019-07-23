@@ -1,30 +1,24 @@
 import { Injectable } from '@angular/core';
 import {AuthTokenService} from '../../auth-token/auth-token.service'
-
 import {
     Response
 } from '@angular/http';
-
-
 import { Observable } from 'rxjs/Observable';
+import { delay } from 'rxjs/operators';
 
 
 @Injectable()
 export class InvoicesService {
-
   constructor(private authService: AuthTokenService) { }
-  //private userOptions: any;
-
+  // private userOptions: any;
   private itemData: any;
   private userOptions: any = {
     userPath: 'invoices'
-  }
+  };
 
   // Validate token request
   getInvoicesByID(id): Observable<Response> {
-
-      let observ = this.authService.get(this.userOptions.userPath +'/'+id+'?access_token='+this.authService.currentAuthData.accessToken);
-
+      const observ = this.authService.get(this.userOptions.userPath +'/'+id+'?access_token='+this.authService.currentAuthData.accessToken);
       observ.subscribe(
           res => {
             this.itemData = res.json();
@@ -86,6 +80,7 @@ export class InvoicesService {
 
   // Validate token request
   addInvoices(body): Observable<Response> {
+
     body.access_token = this.authService.currentAuthData.accessToken;
     body.shop = JSON.parse(this.authService.currentAuthData.currentShop).sid.id;
     body.createdBy = this.authService.currentAuthData.uid;
@@ -141,6 +136,50 @@ export class InvoicesService {
 
           return observ;
   }
+ 
+
+    isIdTaken(inv: any): any {
+      if(!inv){
+        const isTaken = false;
+
+    return Observable.of(isTaken).pipe(delay(400));
+      }
+      
+     let body: any = {shop: JSON.parse(this.authService.currentAuthData.currentShop).sid.id,
+                invoice_number: inv,
+                access_token: this.authService.currentAuthData.accessToken};
+      body = JSON.stringify(body);
+ 
+        let observ = this.authService.post(this.userOptions.userPath + '/isuniqe', body);
+  
+        return observ;
+      /*  observ.subscribe(
+            res => {
+              this.itemData = res.json();
+              console.log(this.itemData);
+              //const isTaken = this.itemData ? true : false;
+              return this.itemData;
+
+             // return Observable.of('true').pipe(delay(400));
+           
+              //const isTaken = ALTER_EGOS.includes(alterEgo);
+              //return Observable.of(isTaken).pipe(delay (400));
+              
+            },
+            error => {
+                if (error.status === 404) {
+                  ///  this.signOut();
+                  
+                   return Observable.of('false');
+                }
+                const isTaken = false;
+              return Observable.of(isTaken).pipe(delay (400));
+            });   */
+           
+
+
+
+    }
 
 
 

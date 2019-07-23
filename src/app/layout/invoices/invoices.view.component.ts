@@ -39,9 +39,51 @@ export class InvoicesViewComponent implements OnInit {
       this.docType = this.router.routerState.snapshot.url.split('/')[1];
       this.docTypeView = (this.docType === 'purchaseorders') ? 'Purchase Order' : this.docType === 'invoices' ? 'Invoice' : 'Sales Order';
     }
+
+    printDiv(divId, title) {
+      let mywindow = window.open('', 'PRINT', 'height=650,width=900,top=100,left=150');
+    
+      mywindow.document.write(`<html><head><title>${title}</title>`);
+      mywindow.document.write('</head><body >');
+      mywindow.document.write(document.getElementById(divId).innerHTML);
+      mywindow.document.write('</body></html>');
+    
+      mywindow.document.close(); // necessary for IE >= 10
+      mywindow.focus(); // necessary for IE >= 10*/
+    
+      mywindow.print();
+      mywindow.close();
+    
+      return true;
+    }
+
     printv() {
       const d = new Printd();
-      const cssText = `table {
+      const cssText = ` 
+      @page {
+        size: A4;
+        margin: 1mm 7mm 7mm 7mm;
+      }
+      .sign { page-break-inside : avoid }
+      .footer{
+        position:fixed;
+        bottom:0px;
+       left:0px;
+       width:100%;
+       padding:8px;
+    }
+    #header {
+      display: table-header-group;
+    }
+    
+    #main {
+      display: table-row-group;
+    }
+    
+    #footer {
+      display: table-footer-group;
+    }
+    table {
   width: 100%;
   max-width: 100%;
   margin-bottom: 1rem;
@@ -50,7 +92,7 @@ export class InvoicesViewComponent implements OnInit {
   .table td {
     padding: 0.75rem;
     vertical-align: top;
-    border-top: 1px solid #dee2e6; }
+     }
   .table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #dee2e6; }
@@ -63,8 +105,7 @@ export class InvoicesViewComponent implements OnInit {
 .table-sm td {
   padding: 0.3rem; }
 
-.table-bordered {
-  border: 1px solid #dee2e6; }
+
   .table-bordered th,
   .table-bordered td {
     border: 1px solid #dee2e6; }
@@ -262,9 +303,6 @@ h2,
 	padding: 5px
 }
 
-.table-bordered {
-	border: 1px solid #ddd
-}
 
 .table-bordered>thead>tr>th,
 .table-bordered>tbody>tr>th,
@@ -337,6 +375,10 @@ table th[class*="col-"] {
 .table>tbody>tr.success>th,
 .table>tfoot>tr.success>th {
 	background-color: #dff0d8
+}
+
+.table>thead>tr>td.no-line{
+  border: none;
 }
 
 .table-hover>tbody>tr>td.success:hover,
@@ -415,6 +457,21 @@ table th[class*="col-"] {
 .table-hover>tbody>tr.danger:hover>th {
 	background-color: #ebcccc
 }
+.col-6,
+.col-12 {
+    float: left
+}
+
+.col-12 {
+    width: 100%
+}
+
+.col-6 {
+    width: 50%
+}
+.offset-8{
+  margin-left:50%;
+}
 
 .table-responsive {
 	overflow-x: auto;
@@ -443,9 +500,15 @@ table th[class*="col-"] {
           this.invoiceData = res.json();
           this.invoiceData.customer.baddress = this.invoiceData.customer.baddress.replace(/(?:\r\n|\r|\n)/g, '<br>');
           this.invoiceData.customer.saddress = this.invoiceData.customer.saddress.replace(/(?:\r\n|\r|\n)/g, '<br>');
-          let invdate = this.invoiceData.invoice_date;
-          let total_tax = (this.invoiceData.tax_type === 'fixed') ? this.invoiceData.tax_rate : parseInt(this.invoiceData.subtotal) * (parseInt(this.invoiceData.tax_rate)/100) ;
+          this.invoiceData.shop.address = this.invoiceData.shop.address.replace(/(?:\r\n|\r|\n)/g, '<br>');
+          this.invoiceData.shop.bank = this.invoiceData.shop.bank.replace(/(?:\r\n|\r|\n)/g, '<br>');
+          const invdate = this.invoiceData.invoice_date;
+          const invshipping = this.invoiceData.shipping_date;
+          const invdue = this.invoiceData.invoice_due;
+          const total_tax = (this.invoiceData.tax_type === 'fixed') ? this.invoiceData.tax_rate : parseInt(this.invoiceData.subtotal) * (parseInt(this.invoiceData.tax_rate)/100) ;
           this.invoiceData.invoiceDate = new Date(invdate.year, invdate.month - 1, invdate.day);
+          this.invoiceData.shipping_date = new Date(invshipping.year, invshipping.month - 1, invshipping.day);
+          this.invoiceData.invoice_due = new Date(invdue.year, invdue.month - 1, invdue.day);
           this.invoiceData.total_tax = total_tax;
           console.log(this.invoiceData.invoiceData);
        }

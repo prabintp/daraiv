@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { InvoicesRoutingModule } from './invoices-routing.module';
@@ -17,18 +17,20 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ItemsService } from '../items/items.service';
 import { TaxService } from '../tax/tax.service';
 import { ContactsService } from '../contacts/contacts.service';
+import { UniqueInvoiceIdValidator} from './invoices-id-uniqe.directive';
 
 import { LineitemsComponent } from '../components/lineitems/lineitems.component';
 
 
 @NgModule({
-    imports: [CommonModule, InvoicesRoutingModule,NgbModule.forRoot(),
-       PageHeaderModule, NgxDatatableModule,ReactiveFormsModule,
+    imports: [CommonModule, InvoicesRoutingModule, NgbModule.forRoot(),
+       PageHeaderModule, NgxDatatableModule, ReactiveFormsModule,
        ModalModule,
         FormsModule, NguiAutoCompleteModule],
     declarations: [InvoicesComponent, InvoicesAddComponent,
-      InvoicesListComponent, InvoicesEditComponent, LineitemsComponent,InvoicesViewComponent],
-    providers: [InvoicesService, ItemsService, TaxService, ContactsService],
+      InvoicesListComponent, InvoicesEditComponent, LineitemsComponent,
+      InvoicesViewComponent],
+    providers: [InvoicesService, ItemsService, TaxService, ContactsService, UniqueInvoiceIdValidator],
     entryComponents: [InvoicesViewComponent]
 })
 export class InvoicesModule {}
