@@ -1,0 +1,16 @@
+image: node:4.2.2
+
+pages:
+  cache:
+    paths:
+    - node_modules/
+
+  script:
+  - npm install -g @angular/cli
+  - npm install
+  - ng build --base-href=/ --env=prod
+  artifacts:
+    paths:
+    - dist
+  only:
+    - master

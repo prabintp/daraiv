@@ -38,11 +38,11 @@ export class AccountsAddComponent implements OnInit {
      this.initForm();
      // this.accountOption = this.accountsService.getAccountTypes();
     }
-    initForm(){
+    initForm() {
       this.accountsForm = this._fb.group({
          name: ['', [Validators.required]],
-         desc:[''],
-         accounttype: [this.accountOption, [Validators.required]]
+         desc: [''],
+         accounttype: [ null, [Validators.required]]
        });
     }
     onAdd(){

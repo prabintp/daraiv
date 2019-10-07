@@ -48,8 +48,8 @@ export class AccountsEditComponent implements OnInit {
     initForm(){
       this.accountsForm = this._fb.group({
          name: ['', [Validators.required]],
-         desc:[''],
-         accounttype: [this.accountOption, [Validators.required]]
+         desc: [''],
+         accounttype: [ null, [Validators.required]]
        });
     }
 
@@ -71,7 +71,7 @@ export class AccountsEditComponent implements OnInit {
           this.patchForm();
        }
       else{
-         this.accountsdata = []
+         // this.accountsdata = []
        }
      }
 
