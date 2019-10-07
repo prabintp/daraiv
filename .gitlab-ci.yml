@@ -11,6 +11,6 @@ pages:
   - ng build --base-href=/ --env=prod
   artifacts:
     paths:
-    - dist
+    - public
   only:
     - master
