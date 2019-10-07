@@ -1,11 +1,10 @@
-
-<form [formGroup]="taxForm" (ngSubmit)="onAdd()">
+<form [formGroup]="accountsForm" (ngSubmit)="onEdit()">
   <div class="row">
     <fieldset class="form-group col-md-6">
-      <label>Tax Name</label>
-      <input [class.is-invalid]="taxForm.controls.name.touched && !taxForm.controls.name.valid" required name="name" formControlName="name" class="form-control validate ">
+      <label>Accounts Name</label>
+      <input [class.is-invalid]="accountsForm.controls.name.touched && !accountsForm.controls.name.valid" required name="name" formControlName="name" class="form-control validate ">
       <div class="invalid-feedback">
-        tax Name is required.
+        accounts Name is required.
       </div>
     </fieldset>
     <fieldset class="form-group col-md-6">
@@ -27,8 +26,8 @@
     </fieldset>
   </div>
   <div class="col-md-12">
-      <button type="submit" class="btn btn-secondary" [disabled]="!(taxForm.valid)">Submit Button</button>
+      <button type="submit" class="btn btn-secondary" [disabled]="!(accountsForm.valid)">Submit Button</button>
       <button type="reset" class="btn btn-secondary">Reset Button</button>
-  <!--   <div class="row" >{{taxForm.value | json}}</div> -->
+      <!-- <div class="row" >{{accountsForm.value | json}}</div> -->
   </div>
 </form>

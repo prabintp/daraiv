@@ -101,7 +101,9 @@
             </li>
         </div>
 
-
+        <a [routerLink]="['/accounts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;{{ 'Accounts' | translate }}
+        </a>
         <div class="nested-menu">
             <a class="list-group-item" (click)="addExpandClass('settings')">
                 <span><i class="fa fa-fw fa-gear"></i>&nbsp; {{ 'Settings' | translate }}</span>

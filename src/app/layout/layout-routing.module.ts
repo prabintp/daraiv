@@ -19,6 +19,7 @@ const routes: Routes = [
             { path: 'purchaseorders', loadChildren: './invoices/invoices.module#InvoicesModule' },
             { path: 'category', loadChildren: './category/category.module#CategoryModule' },
             { path: 'tax', loadChildren: './tax/tax.module#TaxModule' },
+            { path: 'accounts', loadChildren: './accounts/accounts.module#AccountsModule' },
             { path: 'contacts', loadChildren: './contacts/contacts.module#ContactsModule' },
           //  { path: 'items/add', loadChildren: './users/users.module#UsersModule' },
             { path: 'forms', loadChildren: './form/form.module#FormModule' },

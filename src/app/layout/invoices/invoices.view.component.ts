@@ -509,7 +509,7 @@ table th[class*="col-"] {
           this.invoiceData.invoiceDate = new Date(invdate.year, invdate.month - 1, invdate.day);
           this.invoiceData.shipping_date = new Date(invshipping.year, invshipping.month - 1, invshipping.day);
           this.invoiceData.invoice_due = new Date(invdue.year, invdue.month - 1, invdue.day);
-          this.invoiceData.total_tax = total_tax;
+          this.invoiceData.total_tax = parseFloat(total_tax).toFixed(2);
           console.log(this.invoiceData.invoiceData);
        }
       else{

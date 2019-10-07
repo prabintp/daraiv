@@ -1,0 +1,36 @@
+
+<form [formGroup]="accountsForm" (ngSubmit)="onAdd()">
+  <div class="row">
+    <fieldset class="form-group col-md-3">
+      <label>Accounts Name</label>
+      <input [class.is-invalid]="accountsForm.controls.name.touched && !accountsForm.controls.name.valid" required name="name" formControlName="name" class="form-control validate ">
+      <div class="invalid-feedback">
+        accounts Name is required.
+      </div>
+    </fieldset>
+    <fieldset class="form-group col-md-3">
+      <label>Account Type</label>
+      
+      <select  name="accounttype" formControlName="accounttype" class="form-control validate ">
+          <option value="null" [selected]="accounttype == null" disabled="disabled">Please Select</option>
+          <option *ngFor="let item of accountOption" [ngValue]="item.id">{{item.name}}</option>
+        </select>
+      <div class="invalid-feedback">
+        Item SKU is required.
+      </div>
+    </fieldset>
+    <fieldset class="form-group col-md-6">
+      <label>Description</label>
+      <textarea name="desc" formControlName="desc" class="form-control validate" rows="3"></textarea>
+    </fieldset>
+  </div>
+  <div class="row">
+ 
+</div>
+
+  <div class="col-md-12">
+      <button type="submit" class="btn btn-secondary" [disabled]="!(accountsForm.valid)">Submit Button</button>
+      <button type="reset" class="btn btn-secondary">Reset Button</button>
+   
+  </div>
+</form>
